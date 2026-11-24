@@ -1,17 +1,23 @@
 const audio = document.querySelector("#audio");
-const player = document.querySelector(".player");
 const title = document.querySelector("#chapter-title");
+const chapterNumber = document.querySelector("#chapter-number");
 const statusLine = document.querySelector("#status");
+const captionPanel = document.querySelector("#caption-panel");
 const captions = document.querySelector("#captions");
 const captionToggle = document.querySelector("#caption-toggle");
 const transcript = document.querySelector("#script");
 const chapterDownload = document.querySelector("#chapter-download");
 const previous = document.querySelector("#prev");
 const next = document.querySelector("#next");
+const playPause = document.querySelector("#play-pause");
+const seek = document.querySelector("#seek");
+const elapsed = document.querySelector("#elapsed");
+const duration = document.querySelector("#duration");
 const rate = document.querySelector("#rate");
 const theme = document.querySelector("#theme");
 const library = document.querySelector("#chapters");
 const storageKey = "microeconomics-audiobook";
+const audioVersion = "56d9fa4";
 
 function loadProgress() {
   try {
@@ -24,6 +30,8 @@ function loadProgress() {
 const saved = loadProgress();
 let index = 0;
 let showCaptions = saved.showCaptions !== false;
+let captionsMatchAudio = false;
+let captionFrame = 0;
 
 function saveProgress() {
   if (audio.readyState < HTMLMediaElement.HAVE_METADATA) return;
@@ -41,8 +49,14 @@ function saveProgress() {
   }
 }
 
+function formatTime(seconds) {
+  const wholeSeconds = Math.floor(seconds);
+  const minutes = Math.floor(wholeSeconds / 60);
+  return `${minutes}:${String(wholeSeconds % 60).padStart(2, "0")}`;
+}
+
 function currentCaption(position) {
-  const cues = chapterCaptions[index];
+  const cues = chapterCaptions[index].cues;
   let low = 0;
   let high = cues.length;
   while (low < high) {
@@ -54,28 +68,95 @@ function currentCaption(position) {
 }
 
 function updateCaptions() {
-  const text = showCaptions && audio.readyState >= HTMLMediaElement.HAVE_METADATA
-    ? currentCaption(audio.currentTime) : "";
+  let text = "";
+  if (showCaptions && audio.readyState >= HTMLMediaElement.HAVE_METADATA) {
+    text = captionsMatchAudio
+      ? currentCaption(audio.currentTime)
+      : "Lydsporet og undertekstene er fra ulike versjoner. Last inn siden på nytt.";
+  }
   if (captions.textContent !== text) captions.textContent = text;
+}
+
+function tickCaptions() {
+  updateCaptions();
+  captionFrame = showCaptions && captionsMatchAudio && !audio.paused && !audio.ended
+    ? requestAnimationFrame(tickCaptions)
+    : 0;
+}
+
+function syncCaptions() {
+  cancelAnimationFrame(captionFrame);
+  tickCaptions();
 }
 
 function setCaptions(visible) {
   showCaptions = visible;
   captionToggle.setAttribute("aria-pressed", String(visible));
-  captions.hidden = !visible;
-  updateCaptions();
+  captionPanel.hidden = !visible;
+  syncCaptions();
+}
+
+function updateTimeline() {
+  const hasDuration = Number.isFinite(audio.duration) && audio.duration > 0;
+  const position = hasDuration ? audio.currentTime : 0;
+  seek.disabled = !hasDuration;
+  seek.max = hasDuration ? audio.duration : 0;
+  seek.value = position;
+  elapsed.textContent = formatTime(position);
+  duration.textContent = formatTime(hasDuration ? Math.round(audio.duration) : 0);
+  seek.setAttribute("aria-valuetext", `${elapsed.textContent} av ${duration.textContent}`);
+}
+
+function updatePlayButton() {
+  const playing = !audio.paused && !audio.ended;
+  const label = playing ? "Pause" : "Spill av";
+  playPause.classList.toggle("is-playing", playing);
+  playPause.setAttribute("aria-label", label);
+  playPause.title = label;
+}
+
+function play() {
+  const source = audio.src;
+  audio.play().catch((error) => {
+    if (source === audio.src && error.name !== "AbortError" && !audio.error) {
+      statusLine.textContent = "Trykk på spill av for å fortsette.";
+    }
+  });
 }
 
 const chapterButtons = chapters.map((chapter, chapterIndex) => {
+  const item = document.createElement("li");
   const button = document.createElement("button");
+  const number = document.createElement("span");
+  const info = document.createElement("span");
+  const name = document.createElement("span");
   const edition = document.createElement("small");
-  edition.textContent = chapterIndex === 0 ? "Fullt kapittel" : "Kort introduksjon";
+  const length = document.createElement("span");
+  button.className = "track";
   button.type = "button";
-  button.append(`${chapterIndex + 1}. ${chapter.title}`, edition);
-  button.addEventListener("click", () => selectChapter(chapterIndex));
+  number.className = "track-number";
+  number.textContent = String(chapterIndex + 1).padStart(2, "0");
+  number.setAttribute("aria-hidden", "true");
+  name.className = "track-title";
+  name.textContent = chapter.title;
+  edition.className = "track-edition";
+  edition.textContent = chapterIndex === 0 ? "Fullt kapittel" : "Kort introduksjon";
+  length.className = "track-duration";
+  length.textContent = formatTime(Math.round(chapterCaptions[chapterIndex].duration));
+  info.append(name, document.createElement("br"), edition);
+  button.append(number, info, length);
+  button.addEventListener("click", () => {
+    if (index === chapterIndex) {
+      if (audio.paused || audio.ended) play();
+      else audio.pause();
+      return;
+    }
+    selectChapter(chapterIndex, { autoplay: true });
+  });
+  item.append(button);
+  library.append(item);
   return button;
 });
-library.replaceChildren(...chapterButtons);
 
 function selectChapter(chapterIndex, { position = 0, autoplay = false } = {}) {
   if (!chapters[chapterIndex]) return;
@@ -84,11 +165,14 @@ function selectChapter(chapterIndex, { position = 0, autoplay = false } = {}) {
   index = chapterIndex;
   const chapter = chapters[index];
   const number = String(index + 1).padStart(2, "0");
-  const source = `audio/${number}.mp3`;
+  const path = `audio/${number}.mp3`;
+  const source = location.protocol === "file:" ? path : `${path}?v=${audioVersion}`;
 
-  title.textContent = `${index + 1}. ${chapter.title}`;
+  captionsMatchAudio = false;
+  title.textContent = chapter.title;
+  title.title = chapter.title;
+  chapterNumber.textContent = `Kapittel ${index + 1} av ${chapters.length}`;
   statusLine.textContent = "";
-  captions.textContent = "";
   transcript.replaceChildren(...chapter.text.split("\n\n").map((paragraph) => {
     const isHeading = chapterIndex === 0 && /^(?:Prolog\.|Del \p{L}+\.)/u.test(paragraph);
     const element = document.createElement(isHeading ? "h3" : "p");
@@ -104,21 +188,20 @@ function selectChapter(chapterIndex, { position = 0, autoplay = false } = {}) {
   next.disabled = index === chapters.length - 1;
 
   audio.onloadedmetadata = () => {
+    captionsMatchAudio = Math.abs(audio.duration - chapterCaptions[index].duration) < 0.5;
     if (Number.isFinite(position) && position > 0 && position < audio.duration) {
       audio.currentTime = position;
     }
-    updateCaptions();
+    syncCaptions();
+    updateTimeline();
     saveProgress();
   };
   audio.src = source;
   audio.playbackRate = Number(rate.value);
-  if (autoplay) {
-    audio.play().catch((error) => {
-      if (error.name === "NotAllowedError") {
-        statusLine.textContent = "Trykk på spill av for å fortsette.";
-      }
-    });
-  }
+  syncCaptions();
+  updateTimeline();
+  updatePlayButton();
+  if (autoplay) play();
 }
 
 function setTheme(light) {
@@ -126,8 +209,15 @@ function setTheme(light) {
   theme.setAttribute("aria-pressed", String(light));
 }
 
-previous.addEventListener("click", () => selectChapter(index - 1));
-next.addEventListener("click", () => selectChapter(index + 1));
+playPause.addEventListener("click", () => {
+  if (audio.paused || audio.ended) play();
+  else audio.pause();
+});
+previous.addEventListener("click", () => selectChapter(index - 1, { autoplay: !audio.paused }));
+next.addEventListener("click", () => selectChapter(index + 1, { autoplay: !audio.paused }));
+seek.addEventListener("input", () => {
+  if (!seek.disabled) audio.currentTime = Number(seek.value);
+});
 rate.addEventListener("change", () => {
   audio.playbackRate = Number(rate.value);
   saveProgress();
@@ -142,17 +232,31 @@ captionToggle.addEventListener("click", () => {
 });
 for (const event of ["timeupdate", "seeking", "seeked"]) {
   audio.addEventListener(event, () => {
+    updateTimeline();
     updateCaptions();
     saveProgress();
   });
 }
-audio.addEventListener("pause", saveProgress);
+audio.addEventListener("play", () => {
+  updatePlayButton();
+  syncCaptions();
+});
+audio.addEventListener("pause", () => {
+  updatePlayButton();
+  syncCaptions();
+  saveProgress();
+});
 audio.addEventListener("playing", () => { statusLine.textContent = ""; });
 audio.addEventListener("error", () => {
+  captionsMatchAudio = false;
+  syncCaptions();
+  updateTimeline();
+  updatePlayButton();
   statusLine.textContent = "Kunne ikke åpne lydsporet. Prøv nedlastingslenken for kapitlet.";
 });
 audio.addEventListener("ended", () => {
-  updateCaptions();
+  syncCaptions();
+  updatePlayButton();
   if (index + 1 < chapters.length) {
     selectChapter(index + 1, { autoplay: true });
   } else {
@@ -165,11 +269,6 @@ if (Array.from(rate.options).some((option) => option.value === saved.rate)) {
 }
 setTheme(saved.light === true);
 setCaptions(showCaptions);
-if ("ResizeObserver" in window) {
-  new ResizeObserver(() => {
-    document.documentElement.style.setProperty("--player-height", `${player.offsetHeight}px`);
-  }).observe(player);
-}
 const startIndex = Number.isInteger(saved.index) && chapters[saved.index] ? saved.index : 0;
 const position = startIndex === 0 && saved.firstChapterEdition !== 2 ? 0 : saved.position;
 selectChapter(startIndex, { position });
