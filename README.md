@@ -2,7 +2,7 @@
 
 *Mikroøkonomi – Kunsten å ta bedre beslutninger* er en faglig lydbok på norsk bokmål for MBA i strategi og ledelse. Den planlagte spilletiden er 9 timer og 15 minutter. Første kapittel varer i 39 minutter og inneholder prolog, ledercase og refleksjonsoppgaver. De øvrige kapitlene er foreløpig korte introduksjoner.
 
-- Åpne `index.html` for å lytte, bytte kapittel og lese manuset. Avspillingslinjen ligger nederst mens du blar. Når **Undertekster** er på, fremheves setningen som leses, og forrige setning står over. Spilleren husker lytteposisjonen og tekstinnstillingen når nettleseren tillater lokal lagring.
+- Åpne `index.html` for å lytte, bytte kapittel og lese manuset. Når **Undertekster** er på, vises gjeldende og forrige setning. Velg **Utvid** for å lese hele kapitlet med setningen som leses fremhevet. Du kan bla fritt og trykke **Følg lyden** for å gå tilbake til avspillingspunktet. Spilleren husker lytteposisjonen og tekstinnstillingen når nettleseren tillater lokal lagring.
 - Åpne [de tilgjengelige lydsporene](audio/Mikrookonomi.m4b) i en lydbokspiller for avspilling med kapittelinndeling. De enkelte sporene ligger som MP3-filer i `audio/`.
 - Manuset ligger i `chapters.js`. Lydsporene er lest inn med den norske [Piper-stemmen talesyntese](https://huggingface.co/rhasspy/piper-voices/tree/main/no/no_NO/talesyntese/medium).
 

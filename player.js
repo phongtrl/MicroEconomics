@@ -6,7 +6,16 @@ const captionPanel = document.querySelector("#caption-panel");
 const captionContext = document.querySelector("#caption-context");
 const captions = document.querySelector("#captions");
 const captionToggle = document.querySelector("#caption-toggle");
+const expandCaptions = document.querySelector("#expand-captions");
 const transcript = document.querySelector("#script");
+const manuscriptDetails = document.querySelector("#manuscript-details");
+const libraryView = document.querySelector("#library-view");
+const libraryContent = document.querySelector("#library-content");
+const reader = document.querySelector("#reader");
+const readerTitle = document.querySelector("#reader-title");
+const readerScroll = document.querySelector("#reader-scroll");
+const readerFollow = document.querySelector("#reader-follow");
+const readerClose = document.querySelector("#reader-close");
 const chapterDownload = document.querySelector("#chapter-download");
 const previous = document.querySelector("#prev");
 const next = document.querySelector("#next");
@@ -33,6 +42,12 @@ let index = 0;
 let showCaptions = saved.showCaptions !== false;
 let captionsMatchAudio = false;
 let captionFrame = 0;
+let manuscriptSentences = [];
+let firstManuscriptCue = 0;
+let activeSentence;
+let libraryScrollTop = 0;
+let readerScrollTop = 0;
+let followReader = true;
 
 function saveProgress() {
   if (audio.readyState < HTMLMediaElement.HAVE_METADATA) return;
@@ -67,14 +82,38 @@ function captionIndexAt(cues, position) {
   return low - 1;
 }
 
+function placeActiveSentence() {
+  if (!activeSentence) {
+    readerScroll.scrollTop = 0;
+  } else {
+    const viewport = readerScroll.getBoundingClientRect();
+    const sentence = activeSentence.getBoundingClientRect();
+    if (sentence.top < viewport.top || sentence.bottom > viewport.bottom) {
+      readerScroll.scrollTop += sentence.top - viewport.top - Math.min(48, viewport.height / 4);
+    }
+  }
+  readerScrollTop = readerScroll.scrollTop;
+}
+
+function updateReaderCue(cueIndex) {
+  const sentence = manuscriptSentences[cueIndex - firstManuscriptCue];
+  if (sentence === activeSentence) return;
+  activeSentence?.removeAttribute("aria-current");
+  activeSentence = sentence;
+  activeSentence?.setAttribute("aria-current", "true");
+  if (followReader) placeActiveSentence();
+}
+
 function updateCaptions() {
+  const cues = chapterCaptions[index].cues;
+  const cueIndex = captionsMatchAudio ? captionIndexAt(cues, audio.currentTime) : -1;
+  if (!reader.hidden) updateReaderCue(cueIndex);
+
   let text = "";
   let previousText = "";
   let highlight = false;
-  if (showCaptions && audio.readyState >= HTMLMediaElement.HAVE_METADATA) {
+  if (!captionPanel.hidden && audio.readyState >= HTMLMediaElement.HAVE_METADATA) {
     if (captionsMatchAudio) {
-      const cues = chapterCaptions[index].cues;
-      const cueIndex = captionIndexAt(cues, audio.currentTime);
       text = cues[cueIndex]?.[2] ?? "";
       previousText = cues[cueIndex - 1]?.[2] ?? "";
       highlight = cueIndex >= 0;
@@ -91,7 +130,7 @@ function updateCaptions() {
 
 function tickCaptions() {
   updateCaptions();
-  captionFrame = showCaptions && captionsMatchAudio && !audio.paused && !audio.ended
+  captionFrame = (showCaptions || !reader.hidden) && captionsMatchAudio && !audio.paused && !audio.ended
     ? requestAnimationFrame(tickCaptions)
     : 0;
 }
@@ -104,8 +143,56 @@ function syncCaptions() {
 function setCaptions(visible) {
   showCaptions = visible;
   captionToggle.setAttribute("aria-pressed", String(visible));
-  captionPanel.hidden = !visible;
+  captionPanel.hidden = !visible || !reader.hidden;
   syncCaptions();
+}
+
+function setReaderFollow(follow) {
+  followReader = follow;
+  readerFollow.setAttribute("aria-pressed", String(follow));
+  if (follow) placeActiveSentence();
+}
+
+function setReader(open) {
+  if (open) libraryScrollTop = libraryView.scrollTop;
+  reader.hidden = !open;
+  libraryContent.hidden = open;
+  libraryView.classList.toggle("is-reading", open);
+  expandCaptions.setAttribute("aria-expanded", String(open));
+  captionToggle.hidden = open;
+  if (open) {
+    readerScroll.append(transcript);
+    setReaderFollow(true);
+    readerTitle.focus({ preventScroll: true });
+  } else {
+    updateReaderCue(-1);
+    manuscriptDetails.append(transcript);
+  }
+  setCaptions(showCaptions);
+  if (!open) {
+    libraryView.scrollTop = libraryScrollTop;
+    expandCaptions.focus({ preventScroll: true });
+  }
+}
+
+function renderManuscript(chapter) {
+  manuscriptSentences = [];
+  activeSentence = undefined;
+  transcript.replaceChildren(...chapter.text.split("\n\n").map((paragraph) => {
+    const isHeading = index === 0 && /^(?:Prolog\.|Del \p{L}+\.)/u.test(paragraph);
+    const element = document.createElement(isHeading ? "h3" : "p");
+    for (const sentence of paragraph.split(/(?<=[.!?])\s+/)) {
+      if (element.childNodes.length) element.append(" ");
+      const span = document.createElement("span");
+      span.textContent = sentence;
+      element.append(span);
+      manuscriptSentences.push(span);
+    }
+    return element;
+  }));
+  firstManuscriptCue = chapterCaptions[index].cues.length - manuscriptSentences.length;
+  readerScroll.scrollTop = 0;
+  readerScrollTop = 0;
 }
 
 function updateTimeline() {
@@ -184,13 +271,9 @@ function selectChapter(chapterIndex, { position = 0, autoplay = false } = {}) {
   title.textContent = chapter.title;
   title.title = chapter.title;
   chapterNumber.textContent = `Kapittel ${index + 1} av ${chapters.length}`;
+  readerTitle.textContent = chapter.title;
   statusLine.textContent = "";
-  transcript.replaceChildren(...chapter.text.split("\n\n").map((paragraph) => {
-    const isHeading = chapterIndex === 0 && /^(?:Prolog\.|Del \p{L}+\.)/u.test(paragraph);
-    const element = document.createElement(isHeading ? "h3" : "p");
-    element.textContent = paragraph;
-    return element;
-  }));
+  renderManuscript(chapter);
   chapterDownload.href = source;
   chapterDownload.download = `Mikroøkonomi - ${number} - ${chapter.title}.mp3`;
   for (const [buttonIndex, button] of chapterButtons.entries()) {
@@ -241,6 +324,17 @@ theme.addEventListener("click", () => {
 captionToggle.addEventListener("click", () => {
   setCaptions(!showCaptions);
   saveProgress();
+});
+expandCaptions.addEventListener("click", () => setReader(true));
+readerClose.addEventListener("click", () => setReader(false));
+reader.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") setReader(false);
+});
+readerFollow.addEventListener("click", () => setReaderFollow(!followReader));
+readerScroll.addEventListener("scroll", () => {
+  const position = readerScroll.scrollTop;
+  if (followReader && Math.abs(position - readerScrollTop) > 1) setReaderFollow(false);
+  readerScrollTop = position;
 });
 for (const event of ["timeupdate", "seeking", "seeked"]) {
   audio.addEventListener(event, () => {

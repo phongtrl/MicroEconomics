@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mikroøkonomi – MBA Audio Academy</title>
-  <link rel="stylesheet" href="player.css?v=3">
+  <link rel="stylesheet" href="player.css?v=4">
   <script src="chapters.js?v=56d9fa4" defer></script>
   <script src="captions.js?v=2" defer></script>
-  <script src="player.js?v=3" defer></script>
+  <script src="player.js?v=4" defer></script>
 </head>
 <body>
   <main id="library-view" class="library-view">
-    <div class="library-content">
+    <div id="library-content" class="library-content">
       <header class="site-header">
         <span>MBA Audio Academy</span>
         <button id="theme" type="button" aria-pressed="false">Lys visning</button>
@@ -32,20 +32,33 @@
       </section>
 
       <section class="manuscript" aria-label="Manus og nedlasting for kapitlet">
-        <details>
+        <details id="manuscript-details">
           <summary>Les manus for valgt kapittel</summary>
           <article id="script" aria-labelledby="chapter-title"></article>
         </details>
         <a id="chapter-download" download>Last ned valgt kapittel (MP3)</a>
       </section>
     </div>
+    <section id="reader" class="reader" aria-labelledby="reader-title" hidden>
+      <header class="reader-header">
+        <h2 id="reader-title" tabindex="-1"></h2>
+        <div class="reader-actions">
+          <button id="reader-follow" type="button" aria-pressed="true">Følg lyden</button>
+          <button id="reader-close" type="button">Lukk manus</button>
+        </div>
+      </header>
+      <div id="reader-scroll" class="reader-scroll" tabindex="0" role="region" aria-label="Kapittelmanus"></div>
+    </section>
   </main>
 
   <section class="player" aria-label="Avspilling">
     <div class="player-content">
       <div id="caption-panel" class="caption-panel">
-        <p id="caption-context"></p>
-        <p id="captions"></p>
+        <div class="caption-lines">
+          <p id="caption-context"></p>
+          <p id="captions"></p>
+        </div>
+        <button id="expand-captions" type="button" aria-label="Utvid undertekster" aria-controls="reader" aria-expanded="false">Utvid</button>
       </div>
       <div class="timeline">
         <span id="elapsed" aria-hidden="true">0:00</span>

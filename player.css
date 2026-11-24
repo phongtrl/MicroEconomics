@@ -32,6 +32,7 @@ body.light {
   --accent-ink: #f6fff2;
 }
 .library-view { min-block-size: 0; min-inline-size: 0; overflow: auto; }
+.library-view.is-reading { overflow: hidden; }
 .library-content, .player-content {
   max-inline-size: 70rem;
   margin-inline: auto;
@@ -92,6 +93,40 @@ button:not(:disabled):hover, select:hover { background: var(--raised); }
 .manuscript details { flex: 1 1 17rem; }
 .manuscript article { max-inline-size: 68ch; }
 summary { cursor: pointer; }
+.reader[hidden] { display: none; }
+.reader {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  block-size: 100%;
+}
+.reader-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .55rem 1rem;
+  padding: .85rem clamp(.75rem, 4vw, 2.25rem);
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+.reader-header h2 { margin: 0; }
+.reader-actions { display: flex; flex-wrap: wrap; gap: .45rem; }
+.reader-actions button { font-size: .875rem; }
+.reader-actions [aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.reader-scroll { min-block-size: 0; overflow: auto; overflow-anchor: none; }
+.reader-scroll article {
+  max-inline-size: 68ch;
+  margin-inline: auto;
+  padding: .75rem clamp(.75rem, 4vw, 2.25rem) 2rem;
+  font-size: clamp(1rem, 2.5vw, 1.15rem);
+  line-height: 1.75;
+}
+.reader-scroll [aria-current="true"] {
+  color: var(--accent);
+  background: var(--raised);
+  border-radius: .2rem;
+  box-decoration-break: clone;
+}
 
 .player {
   min-inline-size: 0;
@@ -104,7 +139,9 @@ summary { cursor: pointer; }
 }
 .caption-panel {
   display: grid;
-  place-items: center;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .6rem;
   min-block-size: 2.4rem;
   padding: .45rem .65rem;
   margin-block-end: .45rem;
@@ -113,7 +150,8 @@ summary { cursor: pointer; }
   text-align: center;
 }
 .caption-panel[hidden] { display: none; }
-#caption-context, #captions { max-inline-size: 68ch; margin: 0; line-height: 1.35; overflow-wrap: anywhere; }
+#expand-captions { min-block-size: 2rem; padding: .2rem .45rem; font-size: .8rem; }
+#caption-context, #captions { max-inline-size: 68ch; margin: 0 auto; line-height: 1.35; overflow-wrap: anywhere; }
 #caption-context { margin-block-end: .3rem; font-size: .875rem; }
 #caption-context:empty { display: none; }
 #captions { color: var(--ink); }
