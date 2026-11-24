@@ -179,7 +179,7 @@ function setReader(open) {
 function renderPayoffMatrix({ title, actions, payoffs }) {
   const table = document.createElement("table");
   table.className = "payoff-matrix";
-  table.createCaption().textContent = `Gevinstmatrise for ${title}. Radspillerens gevinst står først.`;
+  table.createCaption().textContent = `Gevinstmatrise for ${title}. Radspillerens gevinst står først. Fet skrift markerer beste respons.`;
   const header = table.createTHead().insertRow();
   const corner = document.createElement("td");
   header.append(corner);
@@ -198,9 +198,14 @@ function renderPayoffMatrix({ title, actions, payoffs }) {
     cells.append(label);
     for (const [columnIndex, [rowPayoff, columnPayoff]] of row.entries()) {
       const cell = cells.insertCell();
-      cell.textContent = `${rowPayoff}, ${columnPayoff}`;
       const rowBest = payoffs.every(otherRow => rowPayoff >= otherRow[columnIndex][0]);
       const columnBest = row.every(pair => columnPayoff >= pair[1]);
+      for (const [payoff, best] of [[rowPayoff, rowBest], [columnPayoff, columnBest]]) {
+        if (cell.hasChildNodes()) cell.append(", ");
+        const value = document.createElement(best ? "strong" : "span");
+        value.textContent = payoff;
+        cell.append(value);
+      }
       if (rowBest && columnBest) {
         const equilibrium = document.createElement("small");
         equilibrium.textContent = "Nash-likevekt";
@@ -215,7 +220,7 @@ function renderManuscript(chapter) {
   manuscriptSentences = [];
   activeSentence = undefined;
   transcript.replaceChildren(...chapter.text.split("\n\n").flatMap((paragraph) => {
-    const isHeading = chapter.full && /^(?:Prolog\.|Del \p{L}+\.)/u.test(paragraph);
+    const isHeading = chapter.full && /^(?:Prolog\.|Mellomspill\.|Del \p{L}+\.)/u.test(paragraph);
     const element = document.createElement(isHeading ? "h3" : "p");
     for (const sentence of paragraph.split(/(?<=[.!?])\s+/)) {
       if (element.childNodes.length) element.append(" ");
@@ -415,8 +420,15 @@ setCaptions(showCaptions);
 const linkedChapter = Number(/^#kapittel-(\d+)$/.exec(location.hash)?.[1]) - 1;
 const savedIndex = Number.isInteger(saved.index) && chapters[saved.index] ? saved.index : 0;
 const startIndex = chapters[linkedChapter] ? linkedChapter : savedIndex;
-const revisedAudio = chapters[startIndex].audioVersion;
+const { audioVersion: revisedAudio, previousAudio } = chapters[startIndex];
 const audioChanged = (startIndex === 0 && saved.firstChapterEdition !== 2) ||
   (revisedAudio && saved.audioVersion !== revisedAudio);
-const position = startIndex === savedIndex && !audioChanged ? saved.position : 0;
+let position = startIndex === savedIndex && Number.isFinite(saved.position) ? saved.position : 0;
+if (audioChanged) {
+  if (previousAudio && saved.audioVersion === previousAudio.version) {
+    if (position >= previousAudio.insertedAt) position += previousAudio.duration;
+  } else {
+    position = 0;
+  }
+}
 selectChapter(startIndex, { position });

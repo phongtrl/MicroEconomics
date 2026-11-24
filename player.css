@@ -140,6 +140,7 @@ summary { cursor: pointer; }
 .payoff-matrix caption { margin-block-end: .4rem; color: var(--muted); text-align: start; }
 .payoff-matrix th, .payoff-matrix td { padding: .45rem .3rem; border: 1px solid var(--border); }
 .payoff-matrix th { background: var(--panel); }
+.payoff-matrix strong { color: var(--accent); font-weight: 750; }
 .payoff-matrix small { display: block; color: var(--accent); }
 
 .player {

@@ -293,7 +293,8 @@ Bruk markedsstrukturen til å stille konkrete spørsmål. Hvor lett er det å by
   {
     title: "Spillteori og strategiske beslutninger",
     full: true,
-    audioVersion: "spillteori-1",
+    audioVersion: "spillteori-2",
+    previousAudio: { version: "spillteori-1", insertedAt: 1113.093, duration: 240.591 },
     matrices: {
       "Del tre. Fangens dilemma.": {
         title: "Fangens dilemma",
@@ -403,6 +404,22 @@ Forskjellen fra fangens dilemma er viktig. I Stag Hunt vil du samarbeide når du
 Organisasjoner kan endre risikoen. Tenk at første avdeling kan få én periode med parallell kjøring slik at den får to poeng selv om andre avdeling er forsinket. Å gå over gir da fire ganger q pluss to ganger én minus q, altså to pluss to q. Da holder det med en sannsynlighet på minst en halv for å matche den trygge gevinsten på tre. Et lite minimum av støtte kan altså flytte terskelen dramatisk. Ta med kostnaden ved parallell kjøring før du avgjør om grepet lønner seg.
 
 Tenk på en overgang der alle sier de støtter det nye, men fortsetter med det gamle i praksis. Hva må en enkelt avdeling tro på for å bytte? Kunne den observere en prøve der den andre avdelingen faktisk kan produsere data i det nye formatet? Det kan være mer verdifullt enn enda en generell beskjed om at alle skal samarbeide. Da endrer du informasjonen som spillerne velger under.
+
+Mellomspill. Slik leser du de fire gevinstmatrisene.
+
+Åpne gjerne matrisene i manuset mens du lytter. Første tall i hver rute er radspillerens gevinst. Det andre er kolonnespillerens. For å finne radspillerens beste respons holder vi kolonnen fast. Vi leser bare det første tallet og sammenligner det nedover. For å finne kolonnespillerens beste respons holder vi raden fast. Vi leser bare det andre tallet og sammenligner bortover. De beste responsene står i fet skrift. Når begge tallene i en rute er uthevet, er kombinasjonen en ren Nash-likevekt.
+
+Begynn med fangens dilemma. Hold først fast at den andre velger ordinær pris. Du får hundre med ordinær pris og hundre og tretti med rabatt. Rabatt er best. Hold så fast at den andre velger rabatt. Du får seksti ved å holde ordinær pris og sytti med rabatt. Rabatt er best også her. Det samme gjelder kolonnespilleren. Derfor har matrisen én rute der begge svarer best, nemlig rabatt hos begge, som gir sytti til hver. Utfallet med hundre til hver er bedre for begge bedriftene, men den som bytter alene fra den ruten, øker sin egen gevinst til hundre og tretti. Det er selve dilemmaet. Det felles ønsket om en bedre rute fjerner ikke fristelsen til å forlate den. Hva som er bedre for kundene, er et eget spørsmål.
+
+I Battle of the Sexes vil du velge samme standard som den andre. Velger den andre standard A, får du tre i stedet for null ved å matche. Velger den andre standard B, får du to i stedet for null. Sjekk nå den andre spilleren. Den vil også matche, men foretrekker kombinasjonen der begge velger B. Det gir to likevekter på diagonalen, med gevinstene tre og to i den ene og to og tre i den andre. Det åpne spørsmålet er hvilken løsning de to klarer å samordne seg om.
+
+I Chicken snur beste respons. Når den andre gir etter, er det bedre å stå på sitt og få fem enn å dele og få tre. Når den andre står på sitt, er det bedre å gi etter og få ett enn å ende med null. De to likevektene ligger derfor utenfor diagonalen. I den ene får radspilleren fem og kolonnespilleren ett. I den andre får kolonnespilleren fem. Hvis begge gir etter, får hver tre, men hver av dem kan da vinne på å stå på sitt alene. Begge kan ønske å unngå null og samtidig strides om hvem som skal vike.
+
+Du kan se forskjellen mellom Chicken og fangens dilemma ved å endre én rute i den første matrisen. Anta at to samtidige rabatter gir femti hver i stedet for sytti. Mot ordinær pris er rabatt fremdeles best, med hundre og tretti mot hundre. Men mot rabatt blir det nå bedre å holde ordinær pris og få seksti enn å velge rabatt og få femti. Denne ene endringen snur beste respons i den ene kolonnen. Når den gjelder begge spillerne, flytter de rene likevektene fra begge med rabatt til rutene med én rabatt og én ordinær pris. Strukturen har blitt Chicken. I et virkelig ledercase kan usikkerhet om kostnaden ved gjensidig eskalering derfor endre svaret på hva slags spill du står i.
+
+Stag Hunt har, som Battle of the Sexes, to likevekter på diagonalen. Men her foretrekker begge den samme likevekten. Når begge går over til det nye systemet, får begge fire. Hvis én går over alene, får den null. Å bli gir alltid tre. Derfor kan to avdelinger som begge vil ha det nye systemet, ende med å bli ved det gamle. De er usikre på om den andre faktisk vil bytte. Siden overgangen gir fire ved samsvar og null ellers, må du være minst tre firedeler sikker på den andres overgang før den matcher den trygge gevinsten på tre.
+
+For å identifisere spillet i praksis, start med hva en spiller vil gjøre hvis den andre tar det felles ønskede valget. Vil du avvike selv om den andre samarbeider, bør du se etter fangens dilemma. Vil du matche, men du og den andre foretrekker ulike felles løsninger, ligner det Battle of the Sexes. Vil du svare motsatt for å unngå at begge eskalerer, ligner det Chicken. Vil du matche og dere ønsker samme gode utfall, men det er kostbart å gå først alene, ligner det Stag Hunt. Da kan du bruke matrisen til å se om problemet først og fremst gjelder insentiver, fordeling, eskalering eller tillit.
 
 Del sju. Nullsumspill, blandede strategier og minimaks.
 
