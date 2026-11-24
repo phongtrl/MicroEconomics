@@ -14,6 +14,7 @@
       --accent: #b6cfae;
     }
     * { box-sizing: border-box; }
+    html { scroll-padding-top: calc(var(--player-height, 0px) + 12px); }
     body {
       margin: 0;
       background: var(--bg);
@@ -32,6 +33,14 @@
     header { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
     header b { letter-spacing: .13em; }
     section { background: var(--panel); padding: clamp(16px, 4vw, 28px); margin: 20px 0; border-radius: 12px; }
+    .player {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      padding: 12px clamp(12px, 4vw, 24px);
+      box-shadow: 0 4px 18px #0003;
+    }
+    .player h2 { font-size: clamp(1rem, 3vw, 1.25rem); margin: 0; }
     h1 { font: bold clamp(36px, 8vw, 64px)/1.1 Georgia, serif; margin: 12px 0; }
     h2 { line-height: 1.25; margin-top: 0; }
     small, #status { color: var(--muted); }
@@ -48,9 +57,27 @@
     option { background: var(--panel); }
     :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
     button:disabled { opacity: .5; cursor: default; }
-    .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .controls { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .controls button, .controls select { min-height: 36px; padding: 4px 8px; font-size: .875rem; }
+    .controls button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
     .speed { display: inline-flex; align-items: center; gap: 8px; margin-left: auto; }
-    audio { display: block; width: 100%; margin: 12px 0; }
+    audio { display: block; width: 100%; height: 42px; margin: 6px 0; }
+    .captions {
+      margin: 8px 0 0;
+      padding: 6px 12px;
+      min-height: calc(3 * 1.35em + 12px);
+      background: var(--bg);
+      border-radius: 6px;
+      font-size: clamp(.9rem, 3vw, 1.05rem);
+      line-height: 1.35;
+      text-align: center;
+      overflow-wrap: anywhere;
+    }
+    @media (max-width: 440px) {
+      .controls { justify-content: space-between; }
+      .speed { margin-left: 0; }
+      .speed-label { position: absolute; clip-path: inset(50%); width: 1px; height: 1px; overflow: hidden; }
+    }
     details { margin-top: 18px; }
     summary { cursor: pointer; }
     article { max-width: 68ch; }
@@ -58,10 +85,12 @@
     nav button { text-align: left; }
     nav small { display: block; }
     nav button[aria-current="true"] { background: var(--panel); border-color: var(--accent); }
-    #status { min-height: 1.6em; margin: 8px 0 0; }
+    #status { margin: 0; }
+    #status:not(:empty) { margin-top: 8px; }
     .download { margin-bottom: 0; }
   </style>
   <script src="chapters.js" defer></script>
+  <script src="captions.js" defer></script>
   <script src="player.js" defer></script>
 </head>
 <body>
@@ -71,22 +100,15 @@
       <button id="theme" type="button" aria-pressed="false">Lys visning</button>
     </header>
 
-    <section aria-labelledby="book-title">
-      <h1 id="book-title">Mikroøkonomi</h1>
-      <p>Kunsten å ta bedre beslutninger</p>
-      <p>Kapittel 1 varer i 39 minutter. For kapittel 2–12 kan du lytte til korte introduksjoner.</p>
-      <small>Planlagt spilletid: 9 t 15 min over 12 kapitler · Syntetisk innlesning på norsk bokmål</small>
-      <p class="download"><a href="audio/Mikrookonomi.m4b" download>Last ned tilgjengelige lydspor (M4B)</a></p>
-    </section>
-
-    <section aria-labelledby="chapter-title">
+    <section class="player" aria-labelledby="chapter-title">
       <h2 id="chapter-title">Lytt til lydboken</h2>
       <audio id="audio" controls preload="metadata" aria-labelledby="chapter-title"></audio>
       <div class="controls">
-        <button id="prev" type="button">Forrige kapittel</button>
-        <button id="next" type="button">Neste kapittel</button>
+        <button id="prev" type="button" aria-label="Forrige kapittel">Forrige</button>
+        <button id="next" type="button" aria-label="Neste kapittel">Neste</button>
+        <button id="caption-toggle" type="button" aria-pressed="true" aria-controls="captions">Undertekster</button>
         <label class="speed" for="rate">
-          Hastighet
+          <span class="speed-label">Hastighet</span>
           <select id="rate">
             <option value="0.75">0,75×</option>
             <option value="1" selected>1×</option>
@@ -96,13 +118,25 @@
           </select>
         </label>
       </div>
+      <p id="captions" class="captions"></p>
       <p id="status" role="status"></p>
+    </section>
+
+    <section aria-labelledby="book-title">
+      <h1 id="book-title">Mikroøkonomi</h1>
+      <p>Kunsten å ta bedre beslutninger</p>
+      <p>Kapittel 1 varer i 39 minutter. For kapittel 2–12 kan du lytte til korte introduksjoner.</p>
+      <small>Planlagt spilletid: 9 t 15 min over 12 kapitler · Syntetisk innlesning på norsk bokmål</small>
+      <p class="download"><a href="audio/Mikrookonomi.m4b" download>Last ned tilgjengelige lydspor (M4B)</a></p>
+      <noscript><p>Du kan laste ned de tilgjengelige lydsporene fra lenken ovenfor.</p></noscript>
+    </section>
+
+    <section aria-label="Manus og nedlasting for kapitlet">
       <p class="download"><a id="chapter-download" download>Last ned kapitlet (MP3)</a></p>
       <details>
         <summary>Les manus</summary>
         <article id="script" aria-labelledby="chapter-title"></article>
       </details>
-      <noscript><p>Du kan laste ned de tilgjengelige lydsporene fra lenken ovenfor.</p></noscript>
     </section>
 
     <h2 id="library-title">Kapitler</h2>

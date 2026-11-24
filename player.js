@@ -1,6 +1,9 @@
 const audio = document.querySelector("#audio");
+const player = document.querySelector(".player");
 const title = document.querySelector("#chapter-title");
 const statusLine = document.querySelector("#status");
+const captions = document.querySelector("#captions");
+const captionToggle = document.querySelector("#caption-toggle");
 const transcript = document.querySelector("#script");
 const chapterDownload = document.querySelector("#chapter-download");
 const previous = document.querySelector("#prev");
@@ -20,6 +23,7 @@ function loadProgress() {
 
 const saved = loadProgress();
 let index = 0;
+let showCaptions = saved.showCaptions !== false;
 
 function saveProgress() {
   if (audio.readyState < HTMLMediaElement.HAVE_METADATA) return;
@@ -30,10 +34,36 @@ function saveProgress() {
       firstChapterEdition: 2,
       rate: rate.value,
       light: theme.getAttribute("aria-pressed") === "true",
+      showCaptions,
     }));
   } catch {
     // Playback also works when the browser blocks local storage.
   }
+}
+
+function currentCaption(position) {
+  const cues = chapterCaptions[index];
+  let low = 0;
+  let high = cues.length;
+  while (low < high) {
+    const middle = Math.floor((low + high) / 2);
+    if (cues[middle][1] <= position) low = middle + 1;
+    else high = middle;
+  }
+  return cues[low]?.[0] <= position ? cues[low][2] : "";
+}
+
+function updateCaptions() {
+  const text = showCaptions && audio.readyState >= HTMLMediaElement.HAVE_METADATA
+    ? currentCaption(audio.currentTime) : "";
+  if (captions.textContent !== text) captions.textContent = text;
+}
+
+function setCaptions(visible) {
+  showCaptions = visible;
+  captionToggle.setAttribute("aria-pressed", String(visible));
+  captions.hidden = !visible;
+  updateCaptions();
 }
 
 const chapterButtons = chapters.map((chapter, chapterIndex) => {
@@ -58,6 +88,7 @@ function selectChapter(chapterIndex, { position = 0, autoplay = false } = {}) {
 
   title.textContent = `${index + 1}. ${chapter.title}`;
   statusLine.textContent = "";
+  captions.textContent = "";
   transcript.replaceChildren(...chapter.text.split("\n\n").map((paragraph) => {
     const isHeading = chapterIndex === 0 && /^(?:Prolog\.|Del \p{L}+\.)/u.test(paragraph);
     const element = document.createElement(isHeading ? "h3" : "p");
@@ -76,6 +107,7 @@ function selectChapter(chapterIndex, { position = 0, autoplay = false } = {}) {
     if (Number.isFinite(position) && position > 0 && position < audio.duration) {
       audio.currentTime = position;
     }
+    updateCaptions();
     saveProgress();
   };
   audio.src = source;
@@ -104,14 +136,23 @@ theme.addEventListener("click", () => {
   setTheme(theme.getAttribute("aria-pressed") !== "true");
   saveProgress();
 });
-for (const event of ["timeupdate", "pause", "seeked"]) {
-  audio.addEventListener(event, saveProgress);
+captionToggle.addEventListener("click", () => {
+  setCaptions(!showCaptions);
+  saveProgress();
+});
+for (const event of ["timeupdate", "seeking", "seeked"]) {
+  audio.addEventListener(event, () => {
+    updateCaptions();
+    saveProgress();
+  });
 }
+audio.addEventListener("pause", saveProgress);
 audio.addEventListener("playing", () => { statusLine.textContent = ""; });
 audio.addEventListener("error", () => {
   statusLine.textContent = "Kunne ikke åpne lydsporet. Prøv nedlastingslenken for kapitlet.";
 });
 audio.addEventListener("ended", () => {
+  updateCaptions();
   if (index + 1 < chapters.length) {
     selectChapter(index + 1, { autoplay: true });
   } else {
@@ -123,6 +164,12 @@ if (Array.from(rate.options).some((option) => option.value === saved.rate)) {
   rate.value = saved.rate;
 }
 setTheme(saved.light === true);
+setCaptions(showCaptions);
+if ("ResizeObserver" in window) {
+  new ResizeObserver(() => {
+    document.documentElement.style.setProperty("--player-height", `${player.offsetHeight}px`);
+  }).observe(player);
+}
 const startIndex = Number.isInteger(saved.index) && chapters[saved.index] ? saved.index : 0;
 const position = startIndex === 0 && saved.firstChapterEdition !== 2 ? 0 : saved.position;
 selectChapter(startIndex, { position });
