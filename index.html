@@ -1,3 +1,110 @@
-<!doctype html><html lang="nb"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Economics — MBA Audio Academy</title><style>
-:root{color-scheme:dark;--bg:#171e1b;--panel:#25332d;--ink:#e7ede5;--muted:#a9bcb0;--accent:#b6cfae}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px system-ui;line-height:1.6}body.light{color-scheme:light;--bg:#f5f2e9;--panel:#e1e8dc;--ink:#26352c;--muted:#526658;--accent:#c4d7b8}main{max-width:900px;margin:auto;padding:24px}header{display:flex;justify-content:space-between;align-items:center;letter-spacing:2px}section{background:var(--panel);padding:25px;margin:20px 0;border-radius:12px}h1{font-family:Georgia;font-size:clamp(36px,7vw,64px);line-height:1.1;margin:12px 0}small,p.meta{color:var(--muted)}button,select{font:inherit;color:var(--ink);background:transparent;border:1px solid var(--muted);padding:12px;border-radius:6px;cursor:pointer}button:focus-visible{outline:3px solid var(--accent)}button.primary{background:var(--accent);color:#18241b;border:0}nav{display:grid;gap:8px}nav button{text-align:left;display:flex;justify-content:space-between;gap:12px}nav button.active{background:var(--panel);border-color:var(--accent)}.controls{display:flex;flex-wrap:wrap;gap:8px}progress{width:100%;accent-color:var(--accent)}article{white-space:pre-wrap}label{display:block;margin:12px 0}svg{width:100%;height:100px}</style><main><header><b>ECONOMICS.</b><button id="theme">Lys / mørk</button></header><section><small>MBA AUDIO ACADEMY · FORHÅNDSVERSJON</small><h1>Mikroøkonomi</h1><p>Kunsten å ta bedre beslutninger</p><svg viewBox="0 0 300 100" preserveAspectRatio="none"><path d="M0 95 L300 5 M0 5 L300 95" stroke="var(--accent)" fill="none" stroke-width="2"/></svg><small>12 korte introduksjoner · Full lydbok under utvikling</small></section><section><small>LYTTEBOK</small><h2 id="title"></h2><p id="status" role="status"></p><progress id="progress" value="0" max="1"></progress><div class="controls"><button id="prev">Forrige</button><button class="primary" id="play">Spill av</button><button id="pause">Pause</button><button id="restart">Start på nytt</button><button id="next">Neste</button></div><label>Hastighet <select id="rate"><option>0.75</option><option selected>1</option><option>1.25</option><option>1.5</option><option>2</option></select></label><label>Stemme <select id="voice"></select></label><details open><summary>Les manus</summary><article id="script"></article></details></section><h2>Kapittelbibliotek</h2><nav id="chapters"></nav></main><script>
-const data=[["Økonomisk tankegang","Knapphet betyr at ressurser er begrensede. Alternativkostnaden er verdien av det beste alternativet du velger bort. Som leder må du sammenligne realistiske alternativer, ikke bare undersøke om et prosjekt er lønnsomt. Marginalanalyse undersøker ekstra gevinst og ekstra kostnad. Irreversible kostnader skal ikke alene avgjøre om et prosjekt videreføres."],["Tilbud og etterspørsel","Markedslikevekt oppstår der tilbudt og etterspurt mengde er lik. En prisendring gir bevegelse langs etterspørselskurven, mens endringer i inntekt eller preferanser kan flytte kurven."],["Elastisitet og prisstrategi","Priselastisitet måler prosentvis endring i etterspurt mengde delt på prosentvis prisendring. Elastisk etterspørsel innebærer stor følsomhet for pris."],["Konsumentteori","Forbrukere velger mellom varer innenfor en budsjettbegrensning. Marginalnytte beskriver den ekstra nytten av én ytterligere enhet."],["Produksjonsteori","Produksjonsfunksjonen beskriver sammenhengen mellom innsatsfaktorer og produksjon. Marginalproduktet er den ekstra produksjonen fra en ytterligere innsatsenhet."],["Kostnadsteori","Faste kostnader varierer ikke med produksjonsmengden på kort sikt. Variable kostnader gjør det. Marginalkostnaden er kostnaden ved ytterligere produksjon."],["Profittmaksimering","Profitt er inntekter minus økonomiske kostnader. Ved et indre optimum er marginalinntekt lik marginalkostnad, gitt relevante maksimumsbetingelser."],["Markedsstrukturer","Fullkommen konkurranse, monopol, monopolistisk konkurranse og oligopol beskriver ulike konkurranseforhold og grader av markedsmakt."],["Spillteori","Spillteori analyserer beslutninger der resultatet avhenger av andre aktørers valg. En Nash-likevekt innebærer at ingen aktør tjener på å endre strategi alene."],["Markedssvikt","Eksternaliteter oppstår når handlinger påvirker tredjeparter uten at virkningen fullt ut reflekteres i prisene."],["Informasjonsasymmetri","Ulik tilgang til informasjon kan føre til ugunstig utvalg og moralsk hasard. Kontrakter og insentiver kan redusere slike problemer."],["Anvendt mikroøkonomi","Ledere kan kombinere alternativkostnad, marginalanalyse, elastisitet og konkurranseanalyse for å prioritere ressurser og evaluere strategi."]];const $=id=>document.getElementById(id);let index=Math.min(11,Math.max(0,Number(localStorage.getItem('chapter'))||0)),offset=Number(localStorage.getItem('offset'))||0,token=0,playing=false;const synth=window.speechSynthesis;function save(){localStorage.setItem('chapter',index);localStorage.setItem('offset',offset)}function render(){ $('title').textContent=(index+1)+'. '+data[index][0];$('script').textContent=data[index][1];$('progress').value=offset/data[index][1].length; $('chapters').replaceChildren(...data.map((c,i)=>{let b=document.createElement('button');b.textContent=String(i+1).padStart(2,'0')+' · '+c[0];b.className=i===index?'active':'';b.onclick=()=>choose(i);return b}));save()}function stop(){token++;if(synth)synth.cancel();playing=false}function choose(i){stop();index=Math.max(0,Math.min(11,i));offset=0;$('status').textContent='Klar til avspilling';render()}function voices(){if(!synth)return;let v=synth.getVoices();$('voice').replaceChildren(...v.map((x,i)=>new Option(x.name+' · '+x.lang,i)));let n=v.findIndex(x=>/^(nb|no|nn)/i.test(x.lang));if(n>=0)$('voice').value=n;else $('status').textContent='Norsk stemme er ikke funnet. Installer norsk talesyntese på enheten ved behov.'}function play(){if(!synth){$('status').textContent='Nettleseren støtter ikke talesyntese.';return}if(playing){synth.resume();return}if(offset>=data[index][1].length)offset=0;const start=offset,t=++token,u=new SpeechSynthesisUtterance(data[index][1].slice(start));u.lang='nb-NO';u.rate=Number($('rate').value);const v=synth.getVoices()[Number($('voice').value)];if(v)u.voice=v;u.onboundary=e=>{if(t!==token)return;offset=start+e.charIndex;$('progress').value=offset/data[index][1].length;save()};u.onend=()=>{if(t!==token)return;playing=false;offset=data[index][1].length;render();$('status').textContent='Kapittel ferdig'};u.onerror=()=>{if(t!==token)return;playing=false;$('status').textContent='Kunne ikke spille av stemmen.'};playing=true;$('status').textContent='Spiller av';synth.speak(u)}$('play').onclick=play;$('pause').onclick=()=>{stop();$('status').textContent='Pauset'};$('prev').onclick=()=>choose(index-1);$('next').onclick=()=>choose(index+1);$('restart').onclick=()=>choose(index);$('rate').onchange=()=>{if(playing){stop();play()}};$('theme').onclick=()=>{document.body.classList.toggle('light');localStorage.setItem('light',document.body.classList.contains('light')?'1':'0')};if(localStorage.getItem('light')==='1')document.body.classList.add('light');if(synth){voices();synth.onvoiceschanged=voices}render();</script></html>
+<!doctype html>
+<html lang="nb">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mikroøkonomi – MBA Audio Academy</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #171e1b;
+      --panel: #25332d;
+      --ink: #e7ede5;
+      --muted: #a9bcb0;
+      --accent: #b6cfae;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 16px/1.6 system-ui, sans-serif;
+    }
+    body.light {
+      color-scheme: light;
+      --bg: #f5f2e9;
+      --panel: #e1e8dc;
+      --ink: #26352c;
+      --muted: #526658;
+      --accent: #385442;
+    }
+    main { max-width: 900px; margin: auto; padding: clamp(16px, 4vw, 36px); }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    header b { letter-spacing: .13em; }
+    section { background: var(--panel); padding: clamp(16px, 4vw, 28px); margin: 20px 0; border-radius: 12px; }
+    h1 { font: bold clamp(36px, 8vw, 64px)/1.1 Georgia, serif; margin: 12px 0; }
+    h2 { line-height: 1.25; margin-top: 0; }
+    small, #status { color: var(--muted); }
+    a { color: var(--accent); text-underline-offset: .18em; }
+    button, select {
+      font: inherit;
+      color: var(--ink);
+      background: transparent;
+      border: 1px solid var(--muted);
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    option { background: var(--panel); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    button:disabled { opacity: .5; cursor: default; }
+    .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .speed { display: inline-flex; align-items: center; gap: 8px; margin-left: auto; }
+    audio { display: block; width: 100%; margin: 12px 0; }
+    details { margin-top: 18px; }
+    summary { cursor: pointer; }
+    article { max-width: 68ch; }
+    nav { display: grid; gap: 8px; }
+    nav button { text-align: left; }
+    nav button[aria-current="true"] { background: var(--panel); border-color: var(--accent); }
+    #status { min-height: 1.6em; margin: 8px 0 0; }
+    .download { margin-bottom: 0; }
+  </style>
+  <script src="chapters.js" defer></script>
+  <script src="player.js" defer></script>
+</head>
+<body>
+  <main>
+    <header>
+      <b>MBA AUDIO ACADEMY</b>
+      <button id="theme" type="button" aria-pressed="false">Lys visning</button>
+    </header>
+
+    <section aria-labelledby="book-title">
+      <h1 id="book-title">Mikroøkonomi</h1>
+      <p>Kunsten å ta bedre beslutninger</p>
+      <small>12 kapitler · 27 min · Syntetisk innlesning på norsk bokmål</small>
+      <p class="download"><a href="audio/Mikrookonomi.m4b" download>Last ned hele lydboken (M4B)</a></p>
+    </section>
+
+    <section aria-labelledby="chapter-title">
+      <h2 id="chapter-title">Lytt til lydboken</h2>
+      <audio id="audio" controls preload="metadata" aria-labelledby="chapter-title"></audio>
+      <div class="controls">
+        <button id="prev" type="button">Forrige kapittel</button>
+        <button id="next" type="button">Neste kapittel</button>
+        <label class="speed" for="rate">
+          Hastighet
+          <select id="rate">
+            <option value="0.75">0,75×</option>
+            <option value="1" selected>1×</option>
+            <option value="1.25">1,25×</option>
+            <option value="1.5">1,5×</option>
+            <option value="2">2×</option>
+          </select>
+        </label>
+      </div>
+      <p id="status" role="status"></p>
+      <p class="download"><a id="chapter-download" download>Last ned kapitlet (MP3)</a></p>
+      <details>
+        <summary>Les manus</summary>
+        <article id="script" aria-labelledby="chapter-title"></article>
+      </details>
+      <noscript><p>Du kan laste ned hele lydboken fra lenken ovenfor.</p></noscript>
+    </section>
+
+    <h2 id="library-title">Kapitler</h2>
+    <nav id="chapters" aria-labelledby="library-title"></nav>
+  </main>
+</body>
+</html>
