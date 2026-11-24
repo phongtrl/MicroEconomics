@@ -1,6 +1,7 @@
 const chapters = [
   {
     title: "Økonomisk tankegang og beslutninger",
+    full: true,
     text: `Prolog. Å tenke som en økonom.
 
 En mandag morgen får du tre e-poster før du har rukket å sette fra deg kaffekoppen. Den første er fra salg. En stor kunde vil fornye avtalen, men bare hvis dere gir rabatt. Den andre er fra drift. To medarbeidere er syke, og du må velge hvilke leveranser som skal få de siste ledige timene denne uken. Den tredje er fra styrelederen. Hun vil vite hvordan du har tenkt å øke lønnsomheten uten å øke bemanningen.
@@ -290,18 +291,270 @@ Prøv å definere ditt eget marked fra kundens ståsted. Hvilke alternativer vur
 Bruk markedsstrukturen til å stille konkrete spørsmål. Hvor lett er det å bytte? Hvor lett kan en konkurrent etablere seg? Hvor raskt kan eksisterende rivaler reagere? Nå skal vi se hvordan den siste vurderingen kan gjøres systematisk.`
   },
   {
-    title: "Spillteori",
-    text: `Du driver ett av to treningssentre i en by. Begge vurderer en rabattkampanje. Hvis du gir rabatt mens rivalen holder prisen, kan du vinne kunder. Hvis begge gir rabatt, kan omtrent samme kundemasse ende med å betale mindre. Lønnsomheten av ditt valg avhenger dermed av hva den andre gjør.
+    title: "Spillteori og strategiske beslutninger",
+    full: true,
+    audioVersion: "spillteori-1",
+    matrices: {
+      "Del tre. Fangens dilemma.": {
+        title: "Fangens dilemma",
+        actions: ["Ordinær pris", "Rabatt"],
+        payoffs: [[[100, 100], [60, 130]], [[130, 60], [70, 70]]],
+      },
+      "Del fire. Battle of the Sexes og samarbeid om standarder.": {
+        title: "Battle of the Sexes",
+        actions: ["Standard A", "Standard B"],
+        payoffs: [[[3, 2], [0, 0]], [[0, 0], [2, 3]]],
+      },
+      "Del fem. Chicken og kostbar eskalering.": {
+        title: "Chicken",
+        actions: ["Står på sitt", "Gir etter"],
+        payoffs: [[[0, 0], [5, 1]], [[1, 5], [3, 3]]],
+      },
+      "Del seks. Stag Hunt, tillit og risiko.": {
+        title: "Stag Hunt",
+        actions: ["Går over", "Blir ved det gamle"],
+        payoffs: [[[4, 4], [0, 3]], [[3, 0], [3, 3]]],
+      },
+    },
+    text: `Del én. Når utfallet avhenger av andre.
 
-Et spill beskriver aktører, mulige strategier og hvilke resultater kombinasjoner av valg gir. Tenk på tallene i dette forenklede eksemplet som tusen kroner i månedlig bidrag. Med ordinær pris hos begge får hver hundre. Den som alene rabatterer får hundre og tretti, mens rivalen får seksti. Med rabatt hos begge får hver sytti.
+Tenk deg at du leder et programvareselskap som skal lansere et nytt produkt til høsten. Teamet ditt har funnet en dato hvor dere kan få mye oppmerksomhet. Så kommer det en melding om at den største konkurrenten vurderer samme uke. Plutselig må du svare på flere spørsmål enn hva det koster å bli klar. Hvor mange kunder vil følge begge lanseringene? Kan det være lønnsomt å vente en uke? Og hvis konkurrenten vet at du vurderer å flytte, hvordan påvirker det deres valg?
 
-Se først på situasjonen der rivalen holder ordinær pris. Da gir din rabatt hundre og tretti i stedet for hundre. Hvis rivalen gir rabatt, får du sytti ved å følge etter og seksti hvis du holder prisen. Rabatt er derfor din beste respons i begge situasjoner. Siden tallene er symmetriske, gjelder det samme for rivalen. Begge gir rabatt, og ingen kan øke sitt eget bidrag ved å skifte strategi på egen hånd. Det er en Nash-likevekt. Eksemplet er et fangens dilemma. Begge ville fått mer med ordinær pris hos begge, men hver har et individuelt insentiv til å avvike fra akkurat den kombinasjonen.
+Det er en spillteoretisk situasjon. Resultatet av et valg avhenger av hva andre velger. Hvis rivalen må fatte en beslutning uten å kjenne din, kan markedet i praksis fungere som et samtidig spill, selv om dere tar beslutningen på forskjellige klokkeslett. Hvis rivalen observerer en bindende lanseringsdato før den velger, er spillet sekvensielt. Hvis markedet kan observere begge planene, men én part vet mye mer om hvor klart produktet er, har vi et informasjonsproblem i tillegg.
 
-Beslutninger kan også tas i rekkefølge. Anta at en ny aktør vurderer å etablere seg, og at du vil forstå hvordan en etablert bedrift reagerer. Analyser først hva den etablerte bedriften faktisk vil tjene på ulike svar etter at etableringen har skjedd. En trussel om svært kostbare priskutt har begrenset kraft hvis bedriften tjener mer på å akseptere konkurrenten når den først er på plass. Å resonnere fra siste beslutning og tilbake kalles baklengs induksjon.
+For å beskrive et spill trenger vi spillere, strategier, informasjon og gevinster. En spiller kan være et menneske, en virksomhet, en kundegruppe eller en avdeling. En strategi er en plan for hva spilleren gjør i de situasjonene den kan møte. I et enkelt spill med ett valg kan strategien bare være å lansere tidlig eller sent. I et spill med rekkefølge må en strategi også beskrive hvordan aktøren reagerer på valg som kanskje aldri blir tatt.
 
-I et gjentatt spill kan framtidige følger endre dagens valg. Dette er relevant for for eksempel et langsiktig forhold mellom en kjøper og en leverandør, der kvalitet og pålitelighet blir synlige over tid. For konkurrenter setter konkurranseloven grenser for samarbeid og utveksling av informasjon om blant annet priser. Eksemplet med treningssentrene gir et grunnlag for å forstå uavhengige valg og vurdere lovlige grep som bedre service, lavere kostnader eller en tydeligere kundeprofil.
+Gevinstene uttrykker hvordan aktøren rangerer de mulige utfallene. En gevinst kan være bidrag i kroner, men kan også inkludere omdømme, risiko eller verdi av framtidige muligheter. Hvis én leder vurderes på kvartalssalg og en annen på kundevekst, kan samme markedsutfall gi ulike preferanser. Når du analyserer en beslutning, spør hvem som faktisk tar den og hva vedkommende har grunn til å oppnå.
 
-Når du lager en strategisk plan, skriv ned hvilket svar du tror den andre aktøren velger, og hvorfor svaret er lønnsomt for dem. Regn så en gang til med en annen respons. Hvis beslutningen din endrer seg, har du funnet en antakelse du bør undersøke nærmere.`
+Vi bruker ofte en gevinstmatrise. Se for deg et rutenett med to rader og to kolonner. Du velger rad. Den andre velger kolonne. I hver rute står to tall. Det første er din gevinst, det andre er den andres. Hvis en rute har tallene fire og to, får du fire og den andre to. Dette forteller hvordan akkurat denne kombinasjonen vurderes. Du bør ikke sammenligne tallet fire for deg med tallet to for en annen som om dere har samme verdi per poeng, med mindre måleenheten har den tolkningen.
+
+For rene valg trenger vi ofte bare å vite hvilket utfall hver spiller foretrekker. Når vi regner med sannsynligheter, trenger vi mer. Da behandler vi payoff-tallene som bidrag en risikonøytral aktør sammenligner i forventning, eller som nytteverdier som allerede gjenspeiler risiko. Rangrekkefølgen alene bestemmer ikke de nøyaktige sannsynlighetene i en blandet likevekt. En større forskjell mellom gevinstene i modellen kan derfor endre resultatet selv om rangeringen er den samme.
+
+Tenk til slutt på beslutningsreglene før du tegner matrisen. Kan du endre valget etter at du har sett det andre gjør? Kan en bindende kontrakt forandre handlingsrommet? Vet spillerne hvilke alternativer den andre har? Vi bruker spillmodeller for å se konsekvensene av slike detaljer. En god analyse begynner med å beskrive dem.
+
+Del to. Beste respons, dominans og Nash-likevekt.
+
+En beste respons er valget som gir deg høyest gevinst når de andres valg er gitt. Spør helt konkret hva du ville gjort hvis du visste hva motspilleren gjør. Regn deretter på hva du ville gjort hvis motspilleren valgte annerledes. Til slutt tar du den andre spillerens perspektiv og regner på deres beste responser. I en Nash-likevekt er hver spillers valg en beste respons på de andres valg. Ingen spiller kan forbedre sin egen gevinst ved å endre strategi alene.
+
+Tenk på to avdelinger som velger mellom å bestille samme standard for et system eller å bruke hver sin. Begge har høyest gevinst hvis de enes om én standard, men de kan ha ulike preferanser for hvilken. Begynn med den ene løsningen. Hvis den andre avdelingen velger den, kan det lønne seg for deg å velge samme løsning, selv om du egentlig foretrekker den andre. Gjør den samme øvelsen for den alternative standarden. Det kan vise seg at begge standarder fungerer som stabile utfall. Likevektsbegrepet gir oss da et sett av utfall som må forklares nærmere med forventninger, erfaring og beslutningsregler.
+
+Ordbruken er viktig. En strategi er strengt dominerende hvis den gir større gevinst uansett hva motspilleren velger. Svak dominans betyr at strategien er minst like god mot alle valg, og strengt bedre mot minst ett. Hvis du fjerner en strengt dominert strategi, kan den aldri være en beste respons. Svak dominans krever mer varsomhet. En svak dominert strategi kan være en beste respons i en kolonne med lik gevinst og spille en rolle for hva som blir igjen hvis flere strategier fjernes i ulik rekkefølge.
+
+Se for deg to leverandører som hver kan velge en liten eller stor supportpakke når de byr på samme kunde. Du regner at stor pakke gir deg fire poeng mot rivalens lille pakke, mens din lille pakke gir tre i den situasjonen. Mot rivalens store pakke får du to poeng med stor pakke og to med liten. Stor pakke dominerer den lille svakt. Hvis du får vite at rivalen uansett velger stor pakke, er du likegyldig i akkurat dette regnestykket. En endring i kostnad på bare litt kan avgjøre valget. Det illustrerer hvorfor likheter i en stilisert matrise bør undersøkes.
+
+Nash-likevekt passer som test for stabilitet når spillerne ser de relevante alternativene og har riktige forventninger til hverandres strategier. Testen sier lite om hvordan spillerne fant fram til utfallet eller hvor godt utfallet er for dem samlet. I neste del ser vi et stabilt utfall med lavere gevinst for begge enn et alternativ de kunne foretrukket sammen. Senere ser vi spill der det finnes flere stabile utfall, og spill der bare tilfeldig variasjon gir stabilitet.
+
+Bruk prosedyren for å finne rene likevekter i en matrise. Gå nedover hver kolonne og merk den høyeste gevinsten for radspilleren. Gå langs hver rad og merk den høyeste gevinsten for kolonnespilleren. Hvis det er likt, merk alle beste valg. Hver rute med begge merker er en ren Nash-likevekt. Hvis ingen rute har to merker, bør du undersøke blandede strategier. Du kan også finne en blandet likevekt i et spill som allerede har rene likevekter.
+
+Del tre. Fangens dilemma.
+
+Forestill deg at to treningssentre vurderer hver sin rabattkampanje. Tallene står for tusen kroner i månedsbidrag i en fiktiv modell. Med ordinær pris hos begge får hvert senter hundre. Den som alene gir rabatt får hundre og tretti, mens rivalen får seksti. Hvis begge gir rabatt, får hver sytti. Tallene gir et konkret resonnement å regne på.
+
+Hvis rivalen holder ordinær pris, kan ditt senter øke bidraget fra hundre til hundre og tretti ved å gi rabatt. Hvis rivalen velger rabatt, kan ditt senter øke bidraget fra seksti til sytti ved også å gi rabatt. Rabatt er dermed strengt dominerende for ditt senter. Med de symmetriske tallene er rabatt også strengt dominerende for det andre. Den unike Nash-likevekten gir sytti til hver. Ordinær pris hos begge ville gitt hundre til hver. Dette er grunnen til at dilemmaet oppstår.
+
+Utfallet med rabatt hos begge er Pareto-dominert av utfallet med ordinær pris hos begge i denne matrisen. Et Pareto-bedre alternativ gir minst like god gevinst til hver berørt spiller og bedre gevinst til minst én. Hvis vi vurderer hele samfunnet, må vi også ta med andre berørte. Treningssenterkundene kan få lavere priser og være bedre stilt ved et annet utfall enn det som maksimerer sentrenes bidrag. Et regnestykke for to spillere beskriver de to, med mindre vi utvider modellen.
+
+Øvelsen om rabatter forklarer uavhengige konkurransevalg. Konkurrenter skal vurdere priser selvstendig innenfor konkurransereglene. Det økonomiske dilemmaet oppstår også mellom aktører som kan samarbeide legitimt. I et felles utviklingsprosjekt kan to avdelinger hver velge å gi god dokumentasjon eller spare tid ved å la være. Hvis bare én gjør jobben, kan den andre dra nytte av arbeidet uten samme kostnad. Hvis begge sparer tid, må bedriften senere bruke mye tid på feilretting. Da kan en ny rollefordeling, en felles kvalitetsmåling eller en akseptansetest endre gevinstene.
+
+Du kan kjenne igjen fangens dilemma ved å sammenligne fire størrelser for hver spiller. Den høyeste er å velge avvik når motspilleren samarbeider. Nest best er at begge samarbeider. Deretter kommer at begge avviker. Den laveste er å samarbeide mens motspilleren avviker. Denne rekkefølgen gir den dominerende strategien. Hvis det blir svært kostbart for begge å avvike, kan rangeringen endres, og du får en annen spilltype. I Chicken, som vi snart ser, er det nettopp faren ved gjensidig eskalering som endrer beste respons.
+
+Tenk på en beslutning som ofte ser ut som fangens dilemma i din organisasjon. Hva får den enkelte ved å skyve en regning over på et annet team? Hvorfor er det fristende også når andre gjør det samme? Hva ville den som beslutter tjene hvis gevinsten ble målt på tvers av avdelingene? Bruk svaret til å foreslå en endring i insentivene, og se om den nye matrisen fortsatt har samme likevekt.
+
+Del fire. Battle of the Sexes og samarbeid om standarder.
+
+To avdelinger standardiserer et kundegrensesnitt. Den første har investert i format A og foretrekker at begge bruker A. Den andre foretrekker format B. Begge taper på at formatene blir forskjellige. Det er en variant av det klassiske spillet Battle of the Sexes. Historisk ble det forklart med to personer som ønsker å tilbringe kvelden sammen, men foretrekker hvert sitt arrangement. Den sentrale konflikten er hvem som får sitt foretrukne felles utfall.
+
+Her er alle fire mulighetene. Hvis begge velger A, får første avdeling tre poeng og andre to. Hvis begge velger B, får den første to og den andre tre. Hvis de velger forskjellig, får begge null. Dersom andre avdeling velger A, er det best for den første å svare A, siden tre er bedre enn null. Dersom den andre velger B, er det best å svare B, siden to er bedre enn null. Den andre avdelingen gjør den samme sammenligningen i motsatt retning. Både begge på A og begge på B er rene Nash-likevekter.
+
+Ingen avdeling vil skifte alene etter at en standard er valgt av begge. Samtidig foretrekker de hver sin likevekt. Det forklarer hvorfor to parter kan være enige om å standardisere og fortsatt bruke uker på å bli enige om detaljene. De har et felles problem med å få valgene til å passe sammen og et interesseproblem om hvordan gevinsten skal fordeles.
+
+Det finnes også en blandet likevekt. Si at andre avdeling bruker A med sannsynlighet q. Første avdeling får tre hvis den velger A og den andre også velger A, ellers null. Forventet gevinst ved A er tre ganger q. Ved B får den første to hvis den andre velger B. Forventet gevinst er to ganger én minus q. Spilleren er likegyldig når tre ganger q er lik to minus to ganger q. Fem ganger q er to. Den andre velger derfor A med sannsynlighet to femdeler i en blandet likevekt.
+
+For andre avdeling er A verdt to ved samsvar, B er verdt tre. Kall sannsynligheten for at første avdeling velger A for p. Likningen er to ganger p lik tre ganger én minus p. Fem ganger p er tre. Første avdeling velger A med sannsynlighet tre femdeler. Hver velger oftere sin foretrukne standard. Hvor ofte treffer de hverandre når valgene er uavhengige? Sannsynligheten for begge på A er tre femdeler ganger to femdeler, altså seks tjuefemdeler. Den er den samme for begge på B. Til sammen koordinerer de på tolv tjuefemdeler, litt under halvparten.
+
+Her gir en felles beslutningsregel mye verdi. Hvis begge kan observere en nøytral trekning som velger standard, kan begge følge den anbefalte løsningen. Ved en rettferdig trekning får hver i forventning to og et halvt poeng. Hver gang regelen velger A, er A beste respons hvis den andre også følger regelen. Det samme gjelder B. De samordnede valgene er korrelert gjennom trekningsresultatet. Dette illustrerer forskjellen mellom en felles anbefaling og to uavhengige tilfeldige valg. En felles anbefaling kan løse koordineringen når deltakerne har insentiv til å følge den.
+
+I en virkelig virksomhet kan det være bedre å bruke en objektiv teknisk standard, kostnadsdeling eller en innføringsplan der den ene avdelingen får ekstra støtte. Spør først om problemet handler om at ingen vet hva den andre vil gjøre, eller om de har klart ulike interesser selv etter at de har snakket sammen. Det første kan løses med en tydelig beslutning og felles kunnskap om den. Det andre kan kreve at ledelsen gjør en prioritering eller forhandler om en kompensasjon. Begge utfallene i modellen gir til sammen fem poeng. Hvis A i virkeligheten koster mindre og frigjør kapasitet, er det et selvstendig argument for å velge A før man finner en rimelig fordeling.
+
+Del fem. Chicken og kostbar eskalering.
+
+To interne prosjektgrupper har fått vite at bare én av dem kan bruke bedriftens testmiljø på fredag. Hver kan stå på sitt eller gi etter og flytte deler av arbeidet. Hvis begge står på sitt, forsøker begge å teste samtidig, miljøet blir utilgjengelig og begge taper. Hvis én står på sitt og den andre gir etter, får den første hele tidsvinduet. Hvis begge gir etter, kan de dele kapasiteten og få gjort noe hver.
+
+Sett at begge får tre poeng hvis begge gir etter. Den som står på sitt alene får fem, og den som slipper til den andre får ett. Hvis begge står på sitt, får begge null. Hvis du forventer at den andre gir etter, får du fem ved å stå på ditt og tre ved å gi etter. Stå på ditt er beste respons. Hvis du forventer at den andre står på sitt, er det bedre å få ett enn null. Gi etter er da beste respons. De to rene Nash-likevektene er at én står på sitt og den andre gir etter. Hver foretrekker likevekten der den selv får fem.
+
+Dette er Chicken, som også kalles Hawk–Dove i en nær beslektet modell. Legg merke til forskjellen fra fangens dilemma. Når den andre eskalerer, ønsker du her å trekke deg fordi gjensidig eskalering gir det verste utfallet. I fangens dilemma er avvik beste respons selv når den andre avviker. I Battle of the Sexes vil begge helst velge det samme, selv om de prioriterer ulike felles valg. I Chicken må spillerne velge ulikt for å ende i en ren likevekt. Disse forskjellene bestemmer hvilke tiltak som hjelper.
+
+Regn også på den blandede likevekten. La q være sannsynligheten for at den andre står på sitt. Hvis du står på ditt, får du fem når den andre gir etter og null ellers. Forventet gevinst er fem ganger én minus q. Hvis du gir etter, får du ett med sannsynlighet q, ellers tre. Det er tre minus to ganger q. Sett de to uttrykkene lik hverandre. Fem minus fem q er lik tre minus to q. To er lik tre q. Motspilleren står på sitt med sannsynlighet to tredeler. Fordi spillet er symmetrisk, gjør du det samme i blandet likevekt. Hvis valgene er uavhengige, blir sannsynligheten for at begge eskalerer fire niendedeler. Et utfall kan altså være svært kostbart og likevel ha betydelig sannsynlighet i en likevekt.
+
+En synlig og troverdig binding kan endre utfallet. Hvis én gruppe faktisk har booket en test med en ekstern kunde som ingen kan flytte, kan den andre ha en grunn til å endre planen først. Et utsagn om at «vi kommer aldri til å flytte oss» har liten verdi hvis den andre kan se at det er lønnsomt å flytte når konflikten kommer. Å fjerne egen fleksibilitet kan gi posisjonsmakt, men det kan også gjøre det vanskeligere å unngå tap når begge binder seg. En intern regel for bestilling, en reserveperiode og en tydelig eskaleringsvei kan redusere risikoen mer effektivt enn å satse på at den andre viker.
+
+Spilltypen dukker opp i kapasitetsbeslutninger og forhandlinger om kostbare forsinkelser. Hvis du analyserer et virkelig tilfelle, identifiser først hvem som har mulighet til å justere valget billigst, hva en konflikt koster hver part, og hva som kan observeres før fristen. Det kan være at en løsning hvor begge deler kapasiteten gir mer samlet verdi enn den likevekten de havner i på egen hånd.
+
+Del seks. Stag Hunt, tillit og risiko.
+
+To avdelinger vurderer en felles opplæring i et nytt system. Hvis begge bruker det, kan de dele data og får fire poeng hver. Dersom bare én går over, får den avdelingen null i perioden fordi grensesnittet mot den andre ikke fungerer, mens den som holder seg til det gamle får tre. Hvis begge blir ved den gamle løsningen, får de tre hver. Den gamle løsningen er trygg. Å gå over gir høyere gevinst hvis den andre også går over.
+
+Dette er Stag Hunt, etter den klassiske fortellingen om et stort bytte som krever koordinert innsats og et mindre bytte som kan tas alene. Se på beste respons. Når den andre går over, vil du også gå over og få fire i stedet for tre. Når den andre blir ved det gamle, får du tre ved å bli og null ved å gå over alene. Begge går over er én ren Nash-likevekt. Begge blir er en annen. Den første likevekten gir høyest gevinst for begge i modellen. Den andre tåler bedre at du er usikker på motspillerens valg.
+
+Hvor mye må du tro på at den andre faktisk går over? Kall sannsynligheten q. Gevinsten ved å gå over er fire ganger q. Gevinsten ved å bli er tre uansett. Fire ganger q må være minst tre, så q må være minst tre firedeler. Hvis du vurderer sjansen til bare seksti prosent, får du to komma fire i forventning ved å gå over. Tre er bedre. I dette symmetriske eksemplet kaller vi den trygge likevekten risikodominerende. Hvis du er like usikker på om den andre går over som på om den blir, er det gamle systemet det beste svaret. Det gamle systemet tiltrekker også beste respons for et større område av forventninger.
+
+Forskjellen fra fangens dilemma er viktig. I Stag Hunt vil du samarbeide når du vet at den andre også samarbeider. En verifiserbar forpliktelse eller en felles lansering kan derfor løse en stor del av problemet. I fangens dilemma kan et løfte om samarbeid være utilstrekkelig nettopp fordi du tjener på å avvike selv når den andre faktisk samarbeider. Der kan du trenge en annen kontrakt, måling eller håndheving.
+
+Organisasjoner kan endre risikoen. Tenk at første avdeling kan få én periode med parallell kjøring slik at den får to poeng selv om andre avdeling er forsinket. Å gå over gir da fire ganger q pluss to ganger én minus q, altså to pluss to q. Da holder det med en sannsynlighet på minst en halv for å matche den trygge gevinsten på tre. Et lite minimum av støtte kan altså flytte terskelen dramatisk. Ta med kostnaden ved parallell kjøring før du avgjør om grepet lønner seg.
+
+Tenk på en overgang der alle sier de støtter det nye, men fortsetter med det gamle i praksis. Hva må en enkelt avdeling tro på for å bytte? Kunne den observere en prøve der den andre avdelingen faktisk kan produsere data i det nye formatet? Det kan være mer verdifullt enn enda en generell beskjed om at alle skal samarbeide. Da endrer du informasjonen som spillerne velger under.
+
+Del sju. Nullsumspill, blandede strategier og minimaks.
+
+Et kjent rent nullsumspill er matching pennies. To spillere velger kron eller mynt samtidig. Første spiller vinner ett poeng hvis de velger likt. Andre vinner ett hvis de velger forskjellig. Den som taper får minus ett, slik at gevinsten til én er tapet til den andre. Som første spiller vil du matche den andres valg. Som andre vil du unngå et samsvar.
+
+Prøv alle ruter. Hvis begge velger kron, vil den andre bytte til mynt. Hvis første velger kron og den andre mynt, vil den første bytte til mynt. Fortsetter du resonnementet, finner du ingen ren Nash-likevekt. Hver spiller kan utnytte et forutsigbart, rent valg. Den blandede likevekten er at hver velger kron med sannsynlighet en halv og mynt med en halv. Da har den andre lik forventet gevinst uansett hvilket rent valg den tar. Det er den andres tilfeldige valg som gjør deg likegyldig.
+
+Minimaks handler om å velge en strategi som beskytter deg mot det mest ugunstige motspillet. Første spiller søker å maksimere den garanterte forventede gevinsten. Andre søker å minimere hvor stor gevinst den første kan sikre seg. I et endelig tospillers nullsumspill er disse verdiene like når blandede strategier er tillatt. I eksemplet er spillets verdi null. Hvis du velger kron oftere enn halvparten, kan motspilleren velge mynt og oppnå en forventet fordel. Ved en jevn blanding kan den andre ikke utnytte en tendens i det enkelte spillet.
+
+Overfør ideen til en straffesparksituasjon. Skytteren velger en side. Målvakten velger hvilken side den dekker. Skytteren kan være bedre til å plassere ballen på den ene siden. Da blir riktig blanding vanligvis ulik en halv. Sett at skytteren scorer åtti prosent til venstre ved feil sidevalg fra målvakten og femti prosent når målvakten går riktig. Til høyre scorer skytteren nitti prosent ved feil valg og førti prosent ved riktig valg. Finn målvaktens blanding som gjør skytteren likegyldig. Hvis målvakten dekker venstre med sannsynlighet q, gir skudd til venstre åtti minus tretti q prosent. Skudd til høyre gir førti pluss femti q. Likhet gir førti lik åtti q, altså q lik en halv.
+
+Finn deretter skytterens blanding som gjør målvakten likegyldig. Hvis skytteren velger venstre med sannsynlighet p, blir scoringssannsynligheten femti p pluss nitti ganger én minus p når målvakten dekker venstre. Det er nitti minus førti p. Ved høyredekning blir den åtti p pluss førti ganger én minus p, altså førti pluss førti p. Likhet gir femti lik åtti p. Skytteren velger venstre med sannsynlighet fem åttedeler. Likevektsverdien er sekstifem prosent. Tilfeldig valg betyr her variasjon i riktig forhold. Det betyr ikke at alle alternativer skal velges like ofte.
+
+I forretningslivet er få situasjoner helt nullsum. Du og en leverandør kan krangle om pris, men begge kan tjene på at et bedre produkt kommer fortere i markedet. Å kalle alt nullsum kan gjøre at du overser muligheter for felles gevinst. Bruk minimaks når motpartens gevinst med god grunn kan behandles som ditt tap. Bruk bredere modeller når partene har både felles og motstridende mål.
+
+Del åtte. Spilltre, baklengs induksjon og troverdige trusler.
+
+En ny leverandør vurderer å etablere seg. Hvis den holder seg ute, får den null, og den etablerte leverandøren får fem. Hvis den går inn, kan den etablerte leverandøren enten akseptere konkurransen eller sette i gang en svært kostbar priskamp. Ved aksept får den nye to og den etablerte tre. Ved priskamp får den nye minus ett og den etablerte ett. Les alltid tallene i samme rekkefølge. Det første tilhører den nye leverandøren.
+
+Den etablerte bedriften kan si at den kommer til å svare hardt hvis noen etablerer seg. Men hva bør den gjøre hvis etableringen allerede har skjedd? Etter inngang kan den velge mellom tre ved å akseptere og ett ved å starte priskamp. Aksept er dens beste respons på dette tidspunktet. Den nye bedriften kan se dette og foretrekke to ved inngang framfor null ved å holde seg ute. Denne løsningen finner vi ved baklengs induksjon. Begynn i den siste beslutningssituasjonen, finn beste valg der, og bruk det svaret til å evaluere tidligere valg.
+
+I et spilltre viser en gren en handling og et knutepunkt en beslutning. Når en aktør får velge etter å ha observert den andres valg, må vi ta med strategier også utenfor den veien som faktisk blir fulgt. Den etablerte bedriftens strategi beskriver for eksempel hva den gjør ved inngang selv om inngang aldri skjer. Kombinasjonen der den nye holder seg ute og den etablerte planlegger priskamp ved inngang, kan være en Nash-likevekt av hele spillet. Når etableringen uteblir, endrer den etablerte ikke sin faktiske gevinst ved å bytte den betingede planen. Når trusselen tas som gitt, vil den nye heller få null enn minus ett.
+
+Problemet er at priskamp ikke er rasjonell etter en faktisk etablering. En delspillperfekt Nash-likevekt tester også hver del av spillet som kan betraktes som et eget spill. En plan som bygger på en handling ingen vil velge hvis situasjonen faktisk oppstår, faller derfor bort her. Med tallene våre får vi inngang og aksept. Dette er grunnen til at nyttige strategiplaner beskriver hvilken respons som er lønnsom den dagen den må gjennomføres, med gevinstene som gjelder da.
+
+En reell binding kan endre spillet. En bedrift kan for eksempel inngå et langsiktig leveringsløfte som gjør det dyrt å endre en plan etterpå. Da er avtalen relevant hvis den andre parten kjenner den, og dersom den endrer minst ett av tallene på det avgjørende tidspunktet. En investering du har gjort før, er allerede betalt når du skal velge. Den påvirker valget bare gjennom konsekvensene framover, som lavere driftskostnad eller gebyr ved avbrudd. Ikke forveksle en forpliktelse som gjør responsen lønnsom med et offentlig løfte som bare øker oppmerksomheten rundt den.
+
+Det finnes også en verdi i å vente. Hvis et tre viser at du kan observere aksept, mottiltak eller markedsdata før du investerer fullt, kan en liten pilot beholde valgmuligheter som en stor investering fjerner. Legg den nye muligheten inn som en egen gren. Beregn deretter kostnaden ved å vente og verdien av det du lærer. Det er selve strukturen i treet, hvilke valg som finnes når, som gjør at alternativet kan ha verdi.
+
+Del ni. Gjentatte spill, omdømme og framtidige gevinster.
+
+En kjøper og en leverandør utvikler en tjeneste sammen. I hver periode kan begge gjøre den ekstra innsatsen som trengs for å holde høy kvalitet. Hvis begge gjør det, får hver hundre i netto verdi per periode. Én part kan i en periode spare tid ved å sluntre unna mens den andre gjør arbeidet. Da får den første hundre og tretti og den andre seksti. Hvis ingen gjør innsatsen, får hver sytti. Det er samme struktur som fangens dilemma for hver enkelt periode. Forskjellen er at partene møtes igjen.
+
+Tenk på en plan hvor begge gjør innsatsen så lenge den andre har gjort den. Hvis én avviker, går begge deretter over til det lave innsatsnivået. Bruk en faktor delta for hvor mye neste periodes gevinst er verdt sammenlignet med denne periodens. Delta mellom null og én kan blant annet fange opp utålmodighet eller sjansen for at forholdet fortsetter, avhengig av modellen. Jo større delta, desto mer teller framtiden.
+
+Gevinsten av å bryte ut én gang er tretti nå. Tapet senere er tretti per periode, forskjellen mellom hundre under fortsatt samarbeid og sytti etter bruddet. Den diskonterte verdien av alle de framtidige tapene er tretti ganger delta delt på én minus delta. Samarbeid lønner seg å følge hvis dette tapet er minst tretti. Del på tretti, og vi får at delta delt på én minus delta må være minst én. Dermed må delta være minst en halv. Når delta er nøyaktig en halv, er spilleren likegyldig. Når delta er større, lønner det seg strengt å fortsette samarbeidet under denne planen.
+
+Regnestykket forutsetter at begge kan observere avvik, og at gjentatt lav innsats virkelig er et mulig og troverdig svar. Med tallene våre er lav innsats en likevekt i hver enkelt periode, så partene har ingen ensidig gevinst av å gjøre ekstra innsats alene i fasen etter bruddet. Men en reell kvalitetsfeil kan like gjerne skyldes en tilfeldig forsinkelse som et bevisst avvik. Da kan en uopprettelig reaksjon ødelegge et godt samarbeid. Et system for å avklare årsaker, rette feil og gjenopprette tillit kan gi mer verdi enn å reagere automatisk på første dårlige observasjon.
+
+Ved et kjent, endelig antall perioder med et unikt trinnspillutfall kan baklengs induksjon gi et annet resultat. På den siste dagen er framtiden over. Hvis partene vet dette og begge har lav innsats som strengt beste valg i det enkelte spillet, velger begge lav innsats den siste dagen. Da faller også begrunnelsen bort for å samarbeide den nest siste dagen i den enkle modellen, og resonnementet fortsetter tilbake. Denne konklusjonen bygger på antakelsene. En ukjent sluttdato, mulighet for fornyelse, omdømme hos andre, eller flere likevekter i trinnspillet kan endre analysen.
+
+En konkret lederoppgave er å skille mellom en gevinst i dag og verdien av forholdet over tid. Hvor ofte arbeider partene sammen? Hvilke følger kan observeres pålitelig? Har én part et enkelt alternativ hvis forholdet avsluttes? Et godt samarbeid mellom kjøper og leverandør kan støttes av kvalitetsmåling, en avtalt prosess for avvik og rimelige muligheter for fornyelse. Med direkte konkurrenter gjelder andre rammer. Resonnementet om gjentakelse gir innsikt i at aktører reagerer på historikk, og gir ingen grunn til å dele framtidige priser eller avtale konkurranseatferd.
+
+Del ti. Cournot, Bertrand og Stackelberg.
+
+To bedrifter selger samme type industrivare i en enkel modell. De kan produsere til tjue kroner per enhet. Prisen i markedet blir hundre minus samlet mengde. Hvis de selger førti enheter til sammen, er prisen seksti. Hvis de selger seksti, er prisen førti. Vi antar at hver bedrift vil maksimere profitt, og ser bort fra faste kostnader.
+
+I Cournot-modellen velger bedriftene mengde samtidig. Hvis den andre produserer tjue, er markedsprisen åtti minus min egen mengde. Etter kostnaden på tjue sitter jeg igjen med seksti minus min egen mengde per enhet. Ved tjue egne enheter blir profitten tjue ganger førti, altså åtte hundre. Ved tretti egne enheter blir den tretti ganger tretti, altså ni hundre. Ved førti egne enheter blir den førti ganger tjue, igjen åtte hundre. De tretti enhetene balanserer gevinsten av å selge mer mot prisen som faller på alle enhetene.
+
+Mer generelt er min beste respons halvparten av åtti minus den andres mengde, så lenge svaret er positivt. Du kan finne det ved å maksimere en parabel. Faktorene i profitten er min mengde og åtti minus den andres mengde minus min mengde. For en gitt sum blir produktet høyest når faktorene er like store. I en symmetrisk Nash-likevekt velger begge samme mengde. Da er to ganger min mengde lik åtti minus den andres, som også er min. Tre ganger mengden er åtti. Hver produserer omtrent tjueseks komma sju. Samlet mengde er omtrent femtitre komma tre, og prisen omtrent førtiseks komma sju.
+
+I Bertrand-modellen velger de pris samtidig. Med identiske produkter, samme marginalkostnad og nok kapasitet kan kundene gå til den som er billigst. Hvis begge tar samme pris over tjue, kan én sette prisen litt lavere og overta hele salget i modellen. Når begge tar tjue, vil den som setter lavere pris tape på enhetene, og den som setter høyere pris mister salget. Dermed er pris lik marginalkostnad en likevekt under forutsetningene. Endrer du kapasitet, produktforskjeller, byttefriksjon eller informasjon om pris, kan resultatet bli annerledes. To leverandører betyr derfor ikke automatisk verken høy margin eller hard priskonkurranse. Beslutningsvariabelen og markedet avgjør.
+
+I Stackelberg-modellen velger den ene bedriften mengde først, og den andre observerer før den velger. Bruk de samme tallene. Oppfølgeren velger halvparten av åtti minus den første bedriftens mengde, hvis mengden ligger i relevant intervall. Lederen tar hensyn til dette. Hvis den velger førti, svarer oppfølgeren med tjue. Samlet mengde blir seksti, prisen førti, og marginen tjue. Lederen får åtte hundre og oppfølgeren fire hundre. Du kan sjekke optimum ved å sette opp lederens profitt. Etter å ha satt inn følgerens reaksjon er marginen førti minus halvparten av lederens egen mengde. Produktet av mengde og margin er på topp ved førti.
+
+En tidlig og synlig beslutning gir en fordel i akkurat denne mengdemodellen. I andre spill kan det være bedre å gå sist, observere hva den første valgte, og tilpasse seg. Hvis den første kan endre produksjonen gratis etter at den andre har valgt, mangler den bindende forutsetningen som gjør Stackelberg-resultatet mulig. Spør derfor hva konkurrenten kan observere, hva som faktisk binder kapasitet, og om det viktige valget gjelder mengde, pris eller produktforskjeller. Da velger du modell etter markedet.
+
+Del elleve. Bayesianske spill og skjulte typer.
+
+En distributør vurderer et samarbeid med en ny produsent. Produsenten vet om den har lave eller høye kostnader ved å tilpasse leveransen. Distributøren vet bare at omtrent tjue prosent av produsentene i relevante tilfeller har lave kostnader. Gevinsten av å inngå avtalen er fire poeng for distributøren hvis produsenten har lav kostnad og kan levere, men minus to hvis produsenten har høy kostnad og avtalen går dårlig. Å avstå gir null.
+
+Med de første sannsynlighetene blir forventet gevinst tjue prosent av fire pluss åtti prosent av minus to. Det er null komma åtte minus én komma seks, altså minus null komma åtte. Det lønner seg å avstå med disse tallene. Men hva hvis produsenten stiller en garanti som er langt vanligere blant produsenter med lave kostnader? Anta at åtti prosent av dem med lav kostnad stiller garantien, og at ti prosent av dem med høy kostnad gjør det.
+
+Tenk deg hundre produsenter. Tjue har lave kostnader. Seksten av dem stiller garantien. Åtti har høye kostnader. Åtte av dem stiller garantien. Totalt stiller tjuefire garanti. Av disse har seksten lave kostnader. Når vi observerer garantien, blir oppdatert sannsynlighet for lav kostnad seksten av tjuefire, altså to tredeler. Forventet gevinst ved avtalen blir fire ganger to tredeler minus to ganger én tredel. Det er to. Nå er distributøren positiv. Dette er Bayes' regel uttrykt i antall, og den samme regningen kan gjøres med sannsynligheter.
+
+I et bayesiansk spill har minst én spiller privat informasjon om noe som påvirker gevinstene. Vi kaller den private opplysningen spillerens type. En strategi forteller hva spilleren gjør for hver type spilleren kan ha. I en bayesiansk Nash-likevekt velger hver type en beste respons på andres strategier, gitt hva den vet og tror om dem. Distributøren vil vurdere produsentens valg under hver mulig type. Produsenten vil samtidig vurdere hvordan valget påvirker distributørens oppfatning.
+
+Antakelsen om hvilke typer som finnes og hvor vanlige de er, kan være like viktig som selve mekanismen for oppdatering. Hvis garantien blir lovpålagt og alle må stille den, forteller garantien lite om typen. Hvis både gode og dårlige leverandører kan kjøpe samme dokumentasjon billig, er den heller ikke særlig informativ. Du får ny informasjon når observasjonen er mer sannsynlig under noen forklaringer enn under andre.
+
+Når du bruker en sannsynlighet i et ledermøte, si hvor den kommer fra. Har du data for lignende produsenter? Får leverandører med en annen kostnadsstruktur i praksis mindre nytte fra å stille garanti? Kan de etterligne gode leverandører med en kortere bindingstid eller skjulte unntak? Dette er spørsmål om hvordan signalet blir valgt. Det er her vi går videre fra en ren Bayes-beregning til analysen av et strategisk signal.
+
+Del tolv. Signalisering, separasjon og screening.
+
+En liten teknologibedrift kan selge et produkt på avstand. Kundene oppfatter ikke den faktiske kvaliteten før de har brukt det. Bedriften vurderer en garanti med gratis utskifting ved feil. En leverandør som bygger holdbare produkter, forventer få utskiftinger. En leverandør med lav kvalitet må forvente flere. Den samme garantien er derfor dyrere for den dårlige typen. Det gir en mulig grunn til at et løfte kan formidle informasjon.
+
+Bruk en enkel modell. Å bli oppfattet som en leverandør med høy kvalitet gir fire ekstra poeng. Garantien koster ett poeng for typen med høy kvalitet og fem poeng for typen med lav kvalitet. Hvis kundene tolker garantien som høy kvalitet, får den gode typen en netto gevinst på tre av å stille den. Den dårlige typen ville tapt ett poeng ved å etterligne garantien. En mulig likevekt er at bare den gode typen stiller den, og at kundene bruker den til å skille typene. Vi kaller det en separerende likevekt.
+
+Hvis garantien bare kostet to poeng også for den dårlige typen, ville denne typen tjene på å etterligne i den samme foreslåtte likevekten. Da holder ikke separasjonen. En likevekt der begge typer gjør det samme, kalles samlende eller pooling. Handlingen gir da ingen ny informasjon om typen, selv om den kan ha en egen verdi for kunden. Et reklamebudskap som er like billig å sende for begge, kan på samme måte inneholde lite troverdig informasjon om forskjellen mellom leverandørene.
+
+I dynamiske spill med skjult informasjon vurderer man både handlinger og oppfatninger. I en perfekt bayesiansk likevekt er handlingene rasjonelle på hvert relevant tidspunkt gitt oppfatningene, og oppfatningene følger Bayes' regel der det er mulig å bruke den på utfallet. Vurder hva en mottaker tror etter et uventet signal som ingen typer sender i den foreslåtte likevekten. Hvis signalet skulle ha null sannsynlighet, bestemmer ikke Bayes' regel alene hvilken type som sendte det. Det kan finnes flere likevekter med ulike troverdige forestillinger om avvik. Da må du begrunne forventningene fra institusjoner, historikk eller andre observasjoner.
+
+Skill mellom signalisering og screening. Den informerte parten signaliserer, for eksempel ved å tilby en garanti. Den uinformerte parten setter opp en test eller en kontraktsmeny for å få ulike typer til å velge ulikt. En kjøper kan spørre om leverandøren vil godta en kvalitetsbetaling knyttet til målt oppetid. En dyktig leverandør kan være villig til å ta mer av gevinsten som resultatbetaling. En leverandør som har mindre kontroll over kvaliteten, kan foretrekke en fast betaling. Sjekk også risikobæringen. En liten, god leverandør kan foretrekke sikker betaling fordi et tilfeldig driftsavbrudd truer likviditeten. En test som sorterer på kapitalstyrke er lite nyttig hvis formålet er å måle teknisk kvalitet.
+
+I et intervju kan en ferdighetsprøve gi informasjon mer direkte enn en dyr attest. For en avtale kan betaling ved en observerbar milepæl gi bedre informasjon enn et generelt kvalitetsløfte. I hvert tilfelle må du spørre om handlingen måler det som betyr noe, hvem som kan forfalske den billig, og hvordan kostnaden ved å delta endrer hvem som møter opp.
+
+Del tretten. Auksjoner og valg av spilleregler.
+
+Du skal kjøpe en tjeneste som flere leverandører kan levere. Hvordan bør du be om bud? Hvis du vurderer pris, oppetid og leveringshastighet samtidig, må leverandørene vite hvordan kriteriene virker. Hvis reglene er uklare, kan de være like opptatt av å gjette hvordan du bruker poengmodellen som av å foreslå god kvalitet. Spillteori undersøker hvordan reglene påvirker strategien. Mekanismedesign stiller spørsmålet motsatt vei. Hvilke regler bør vi velge hvis vi ønsker et bestemt utfall?
+
+Start med en salgsauksjon for én vare. I en lukket førsteprisauksjon byr alle uten å se de andres bud. Høyeste bud vinner og betaler sitt eget bud. Hvis varen er verdt hundre for deg, hjelper et bud på nitti deg med å beholde ti hvis du vinner. Et lavere bud gir større overskudd ved seier, men mindre sjanse for å vinne. Hvor mye du bør legge deg under verdien, avhenger blant annet av forventningene til konkurrentene. Dermed må en del av analysen handle om hvilke bud de andre sannsynligvis legger inn.
+
+I en lukket andreprisauksjon vinner fortsatt høyeste bud, men vinneren betaler det nest høyeste. Anta at din verdi er privat, fast og uavhengig av hva de andre vet. Se først på tilfellet der høyeste rivalbud er åtti. Du vil gjerne vinne til åtti hvis varen er verdt hundre. Et bud på hundre lar deg vinne. Et bud på sytti kan få deg til å miste en ønsket handel. Se så på tilfellet der høyeste rivalbud er hundre og ti. Du vil helst tape, fordi du ellers betaler mer enn verdien. Et bud på hundre gir deg den muligheten. Å by din faktiske verdi er svakt dominerende under disse antakelsene. Det blir betalingene og tildelingsregelen, sammen, som gir insentivet.
+
+Andreprisargumentet passer dårligere hvis varen har samme underliggende verdi for alle, men deltakerne har ulike signaler. Tenk på rettigheten til å drive en ukjent ressurs. Høyeste anslag vinner ofte. Å vinne kan fortelle at ditt anslag var mer optimistisk enn konkurrentenes. Da bør du ikke vurdere verdien uten å ta hensyn til informasjonen som ligger i at du vant. Vinnerens forbannelse er faren for å betale mer enn varen viser seg å være verdt hvis budet overser denne utvelgelsen. Det er igjen et eksempel på at en hendelse endrer hvilke tilstander som er sannsynlige.
+
+Når en bedrift kjøper inn, er det ofte leverandørene som byr en lav leveringspris. Høy kvalitet kan være verdifull over flere år, og en leverandør kan legge inn lav pris hvis den forventer å fakturere mye ekstra senere. Hvis du bare belønner lav oppstartspris, kan du få bud som ser billige ut og blir dyre å eie. Gjør ønsket kvalitet og forventet kostnad over levetiden observerbar i reglene der det er mulig. Hvis kvaliteten krever oppfølging etterpå, bør også kontrakten støtte det målet. Spør hvilken handling leverandørene får insentiv til å velge med den nye regelen. Det er kjernen i mekanismedesign.
+
+Del fjorten. Forhandling, outside options og fordeling.
+
+Tenk på en kjøper og en leverandør som kan skape hundre gevinstpoeng ved å inngå en avtale. Hvis de ikke blir enige, kan kjøperen bruke en annen leverandør og få tretti. Leverandøren kan ta et annet oppdrag og få ti. Disse to alternativene kalles ofte outside options. Før partene begynner å dele noe, bør de forstå hva hver kan få uten avtalen. I dette eksemplet er merverdien av avtalen seksti poeng. Det er hundre minus tretti minus ti.
+
+Med lik forhandlingsvekt vil Nash-forhandlingsløsningen i denne enkle modellen gi tretti ekstra til hver. Kjøperen ender med seksti, leverandøren med førti. Løsningen maksimerer produktet av hver parts gevinst utover det de kan få uten avtalen. Hva betyr det muntlig? Hvis du deler seksti i tretti og tretti, er produktet ni hundre. Hvis du deler det i førti og tjue, blir produktet åtte hundre. Fordelingen av merverdien blir lik når vekten er lik, selv om den endelige gevinsten er ulik.
+
+Nash-forhandlingsløsningen er en modell for hvordan forhandlingsgevinster kan fordeles under visse forutsetninger. Nash-likevekt er derimot en test på om strategiene passer sammen som beste responser. Du kan bygge et forhandlingsspill med tilbud og mottilbud, og så finne en Nash-likevekt eller en delspillperfekt likevekt i akkurat det spillet. Men da må du beskrive reglene. Resultatet kan endre seg med hvem som får legge fram første tilbud, hvor mye hver taper på forsinkelse, og når en part kan gå til en annen løsning.
+
+Se på ultimatumspillet. Én spiller foreslår hvordan en sum skal deles. Den andre kan godta eller avslå. Hvis den andre avslår, får begge null. Med bare egen pengeverdi i modellen vil den andre godta ethvert positivt beløp når det å avslå gir null. Hvis minste mulige positive tilbud er én krone, får dette utslag i forslaget. Men mennesker avslår noen ganger skjeve tilbud selv om de taper penger på å avslå. Hvis mottakeren bryr seg om rettferdig fordeling eller om hvilke forventninger et ja skaper i senere forhandlinger, må slike hensyn inn i gevinstene. I en virkelig forhandling er avslaget heller ikke nødvendigvis verdt null.
+
+Du kan overføre dette til praksis uten å måtte finne én riktig kronefordeling. Beregn alternativene for begge parter. Finn ut hvor mye de taper på at prosessen trekker ut. Identifiser hvilke deler av avtalen som kan øke total verdi, for eksempel en mer fleksibel leveringsplan eller en enklere måte å måle kvalitet. Deretter kan du undersøke hvordan den ekstra verdien kan fordeles. Hvis du starter med å fordele listeprisen, kan du miste et grep som gjør hele avtalen bedre.
+
+Del femten. Nettverk, fellesressurser og virkelige valg.
+
+Spillteori virker også når det er mange spillere. Tenk på et felles møterom som kan reserveres i en kalender. Det er gratis for hver gruppe å ta en ekstra time for sikkerhets skyld. Hvis mange gjør det, ser kalenderen full ut og andre får problemer med å finne rom. En gruppes private kostnad ved å reservere en ekstra time er liten. Kostnaden for organisasjonen kan være høy. Slik kan individuelt fornuftige valg gi overbruk av en felles ressurs.
+
+En enkel regel kan endre spillet. Hvis en reservasjon utløper når rommet ikke tas i bruk etter et kort tidsrom, blir kostnaden for andre av den ledige reservasjonen lavere. Hvis alle grupper må betale den samme høye avgiften uansett, kan nyttige møter forsvinne. Det interessante spørsmålet er hva regelen gjør med de ekstra reservasjonene som nesten ikke har verdi for den som legger dem inn. På samme måte kan spillteori forklare hvorfor en ruteplan eller en køordning har dårlig resultat selv om hver enkelt tar det beste valget de ser.
+
+La oss tenke på en nettverksbeslutning. Et selskap har to alternative plattformer. Plattform X er litt billigere når du bruker den alene. Plattform Y har bedre funksjoner når mange av dine samarbeidspartnere også er der. En bruker må forutsi hva andre vil velge. Hvis få forventer at Y får fotfeste, kan det være lønnsomt å velge X uansett hvor god Y blir ved stor bruk. Hvis nok venter at de andre tar i bruk Y, kan valgene stabilisere seg der. Positive nettverkseffekter gir en form for koordinering mellom mange deltakere. Endrer du kostnaden ved å bytte, muligheten til å bruke begge, eller samspillet mellom plattformene, kan terskelen bli en annen.
+
+Et fokalpunkt er et alternativ folk lett kan oppfatte som felles, selv uten å diskutere det. En kjent standard, en fast frist eller en tydelig grunn til å foretrekke en løsning kan fungere slik. Men det virker bare hvis andre har grunn til å oppfatte samme punkt som naturlig. Før du stoler på en uskreven regel, spør en ny medarbeider hvordan de ville tolket den. De kan se andre alternativer enn de som har vært der lenge.
+
+Nash-likevekt krever sammenheng mellom valg og forventninger. Mennesker har begrenset tid og kjenner sjelden alle tallene. I eksperimenter kan de stoppe etter ett eller to resonnementer om andres valg, følge rettferdighetsnormer eller lære av de siste rundene. Det gjør ikke de formelle modellene ubrukelige. De lar deg se hva du ville ventet hvis bestemte forutsetninger holdt. Deretter kan du undersøke hvilket avvik som betyr mest. Kanskje folk ikke vet at gebyret finnes. Kanskje de faktisk velger en mindre gevinst for seg selv fordi fordelingen oppleves urimelig. De forklaringene peker mot ulike tiltak.
+
+Del seksten. Øvelser med gjennomgang.
+
+Første øvelse. To avdelinger velger en felles filstandard. Ved samsvar på X får region øst fire og region vest to. Ved samsvar på Y får øst ett og vest tre. Hvis de velger ulikt, får begge null. Hvilket spill ligner dette, og hvilke rene Nash-likevekter finner du? Stopp gjerne her og tegn opp de fire rutene.
+
+Det ligner Battle of the Sexes. Når vest velger X, vil øst velge X og få fire. Når vest velger Y, vil øst heller få ett ved å matche enn null ved å velge den andre standarden. Vest har samme interesse av samsvar mot hver av østs to valg. Begge på X og begge på Y er rene likevekter. I motsetning til eksemplet tidligere i kapitlet er totalen forskjellig. X gir totalt seks og Y gir fire, hvis poengene kan legges sammen. Da kan en leder foretrekke X og vurdere om noe av den ekstra gevinsten kan brukes til å lette innføringen for vest. Om overføringen er mulig, er en egen antakelse.
+
+Andre øvelse. To prosjektgrupper kan fastholde eller frigi en reservasjon. Hvis begge frigir, får begge fire. Den som fastholder alene får seks, og den som frigir får to. Hvis begge fastholder, får begge null. Finn beste respons mot begge valgene til den andre. Hvor stor må sannsynligheten for at den andre fastholder være for at du skal bli likegyldig?
+
+Hvis den andre frigir, er seks bedre enn fire, så du fastholder. Hvis den andre fastholder, er to bedre enn null, så du frigir. Det er Chicken. La q være sannsynligheten for at den andre fastholder. Egen fastholdelse gir seks minus seks q i forventning. Frigivelse gir fire minus to q. Sett dem like. To er fire q, så q er en halv. Det gir en annen blanding enn i kapittelets første Chicken-spill. Forskjellen kommer fra gevinstene, selv om begge spillene har samme to rene likevekter.
+
+Tredje øvelse. En liten bedrift vurderer å inngå en avtale med en plattform som etter signering kan velge normal eller dyr tilgangspris. For bedriften gir normal pris fire og dyr pris minus to. For plattformen gir normal pris tre og dyr pris fem. Hvis avtalen ikke blir inngått, får begge null. Hva skjer når det ikke finnes en bindende prisavtale?
+
+Begynn i siste node. Når bedriften har signert, foretrekker plattformen fem framfor tre. Bedriften forutser det og sammenligner minus to med null. Den lar være å signere. Legg nå inn et troverdig pristak i avtalen som gjør valget dyr pris utilgjengelig. Da ser bedriften fire ved å signere, og plattformen får tre i stedet for null. Det er en konkret illustrasjon av at en aktør kan tjene på å binde sin egen framtidige handlefrihet. Endringen løser problemet fordi den er kjent før valget og gjelder når prisen settes.
+
+Fjerde øvelse. Se etter forskjellen mellom to tilsynelatende like tilfeller. I det første sier et team at det kan gå over til et nytt system hvis den andre avdelingen bekrefter at den også gjør det. I det andre sier teamet at det helst vil utsette sin egen del av arbeidet dersom den andre avdelingen faktisk går over og løser fellesproblemene alene. Hva er forskjellen, og hvilket tiltak passer?
+
+I det første tilfellet er bekreftet samarbeid en grunn til å samarbeide selv. Det ligner Stag Hunt. En felles plan, et verifiserbart tidspunkt eller en reserveordning kan redusere risiko. I det andre er den andres samarbeid en mulighet til å la den andre bære kostnaden. Det ligner fangens dilemma. Da kan en tydelig ansvarsdeling eller en betinget avtale endre gevinstene. Et løfte om felles innsats gir lite hvis det fremdeles er lønnsomt å bryte det.
+
+Del sytten. En beslutningsrutine for ledere.
+
+Begynn neste strategiske analyse med å formulere én konkret beslutning. For eksempel om du skal lansere før eller etter en rival, og om datoen faktisk kan endres etter at rivalen har reagert. Identifiser beslutningstakerne, hva de vet, hva de kan velge og hvilke resultater de vurderer. Skriv tidshorisonten. En kampanje på én uke og et samarbeid som kan fornyes i mange år er forskjellige spill.
+
+Fyll så ut gevinstene fra hver spillers ståsted. Be gjerne om intervaller, og marker hvilke tall som kan endre beste respons. Hvis rivalen synes ett alternativ er best ved alle realistiske anslag, trenger du mindre tid på å finjustere det tallet. Hvis en antakelse om konkurrentens kapasitet skifter beste respons, har du et mer konkret spørsmål å undersøke. Når gevinster er vanskelige å gjøre om til kroner, kan du likevel angi hvilke utfall som rangeres høyere og hvorfor.
+
+Undersøk stabiliteten med Nash-testen. Finn ut hvem som ønsker å bytte hvis de andre står fast. Hvis det finnes flere likevekter, finn årsaken til at folk kan lande på den ene. Hvis trekket observeres før responsen, bruk et spilltre og regn baklengs. Hvis typen er skjult, skriv ned hva signalet betyr og hvordan den informerte parten kan reagere på tolkningen. Hvis dere møtes i framtiden, undersøk hva som faktisk kan observeres, og hvor verdifull fortsatte relasjoner er.
+
+Til slutt spør hva som kan endre spillet. For interne avdelinger kan en felles standard eller en fordelingsregel fjerne et koordineringsproblem. For en leverandør kan et målbart kvalitetskrav justere insentivene. Overfor en rival kan et uavhengig valg om kapasitet, produkt eller timing ha ulike konsekvenser avhengig av sannsynlig motrespons. Skriv ned et tegn som vil få deg til å oppdatere modellen. Følg opp etter at beslutningen er tatt, slik at du lærer om avvik skyldtes analysen, informasjonen eller gjennomføringen.
+
+Husk forskjellen mellom de fire mønstrene. I fangens dilemma gir avvik best individuell gevinst mot begge valg, og begge kan ende dårligere. I Battle of the Sexes vil begge koordinere, men de foretrekker forskjellige felles utfall. I Chicken kan det være farlig at begge står hardt på sitt, og de rene likevektene har ulike valg. I Stag Hunt kan begge foretrekke det samme gode utfallet, men holde fast ved en tryggere løsning av frykt for å bli stående alene. Når du ser hvilken struktur du har foran deg, kan du forstå hvorfor et tiltak som hjelper i det ene spillet kan være lite nyttig i det andre.
+
+Du har nå sett hvordan beste respons, likevekt, timing og informasjon henger sammen. Bruk dem på én reell beslutning og skriv ned hva som må være sant for at rådet ditt skal holde. I neste kapittel utvider vi analysen til situasjoner der markedets spilleregler og private insentiver kan gi et dårligere resultat for samfunnet.`
   },
   {
     title: "Markedssvikt",

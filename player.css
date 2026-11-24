@@ -127,6 +127,20 @@ summary { cursor: pointer; }
   border-radius: .2rem;
   box-decoration-break: clone;
 }
+.payoff-matrix {
+  inline-size: 100%;
+  max-inline-size: 34rem;
+  margin-block: .75rem 1.5rem;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: .85rem;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.payoff-matrix caption { margin-block-end: .4rem; color: var(--muted); text-align: start; }
+.payoff-matrix th, .payoff-matrix td { padding: .45rem .3rem; border: 1px solid var(--border); }
+.payoff-matrix th { background: var(--panel); }
+.payoff-matrix small { display: block; color: var(--accent); }
 
 .player {
   min-inline-size: 0;

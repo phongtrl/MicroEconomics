@@ -56,6 +56,7 @@ function saveProgress() {
       index,
       position: audio.currentTime,
       firstChapterEdition: 2,
+      audioVersion: chapters[index].audioVersion ?? audioVersion,
       rate: rate.value,
       light: theme.getAttribute("aria-pressed") === "true",
       showCaptions,
@@ -175,11 +176,46 @@ function setReader(open) {
   }
 }
 
+function renderPayoffMatrix({ title, actions, payoffs }) {
+  const table = document.createElement("table");
+  table.className = "payoff-matrix";
+  table.createCaption().textContent = `Gevinstmatrise for ${title}. Radspillerens gevinst står først.`;
+  const header = table.createTHead().insertRow();
+  const corner = document.createElement("td");
+  header.append(corner);
+  for (const action of actions) {
+    const label = document.createElement("th");
+    label.scope = "col";
+    label.textContent = action;
+    header.append(label);
+  }
+  const body = table.createTBody();
+  for (const [rowIndex, row] of payoffs.entries()) {
+    const cells = body.insertRow();
+    const label = document.createElement("th");
+    label.scope = "row";
+    label.textContent = actions[rowIndex];
+    cells.append(label);
+    for (const [columnIndex, [rowPayoff, columnPayoff]] of row.entries()) {
+      const cell = cells.insertCell();
+      cell.textContent = `${rowPayoff}, ${columnPayoff}`;
+      const rowBest = payoffs.every(otherRow => rowPayoff >= otherRow[columnIndex][0]);
+      const columnBest = row.every(pair => columnPayoff >= pair[1]);
+      if (rowBest && columnBest) {
+        const equilibrium = document.createElement("small");
+        equilibrium.textContent = "Nash-likevekt";
+        cell.append(equilibrium);
+      }
+    }
+  }
+  return table;
+}
+
 function renderManuscript(chapter) {
   manuscriptSentences = [];
   activeSentence = undefined;
-  transcript.replaceChildren(...chapter.text.split("\n\n").map((paragraph) => {
-    const isHeading = index === 0 && /^(?:Prolog\.|Del \p{L}+\.)/u.test(paragraph);
+  transcript.replaceChildren(...chapter.text.split("\n\n").flatMap((paragraph) => {
+    const isHeading = chapter.full && /^(?:Prolog\.|Del \p{L}+\.)/u.test(paragraph);
     const element = document.createElement(isHeading ? "h3" : "p");
     for (const sentence of paragraph.split(/(?<=[.!?])\s+/)) {
       if (element.childNodes.length) element.append(" ");
@@ -188,7 +224,8 @@ function renderManuscript(chapter) {
       element.append(span);
       manuscriptSentences.push(span);
     }
-    return element;
+    const matrix = chapter.matrices?.[paragraph];
+    return matrix ? [element, renderPayoffMatrix(matrix)] : [element];
   }));
   firstManuscriptCue = chapterCaptions[index].cues.length - manuscriptSentences.length;
   readerScroll.scrollTop = 0;
@@ -239,7 +276,7 @@ const chapterButtons = chapters.map((chapter, chapterIndex) => {
   name.className = "track-title";
   name.textContent = chapter.title;
   edition.className = "track-edition";
-  edition.textContent = chapterIndex === 0 ? "Fullt kapittel" : "Kort introduksjon";
+  edition.textContent = chapter.full ? "Fullt kapittel" : "Kort introduksjon";
   length.className = "track-duration";
   length.textContent = formatTime(Math.round(chapterCaptions[chapterIndex].duration));
   info.append(name, document.createElement("br"), edition);
@@ -265,7 +302,7 @@ function selectChapter(chapterIndex, { position = 0, autoplay = false } = {}) {
   const chapter = chapters[index];
   const number = String(index + 1).padStart(2, "0");
   const path = `audio/${number}.mp3`;
-  const source = location.protocol === "file:" ? path : `${path}?v=${audioVersion}`;
+  const source = location.protocol === "file:" ? path : `${path}?v=${chapter.audioVersion ?? audioVersion}`;
 
   captionsMatchAudio = false;
   title.textContent = chapter.title;
@@ -375,6 +412,11 @@ if (Array.from(rate.options).some((option) => option.value === saved.rate)) {
 }
 setTheme(saved.light === true);
 setCaptions(showCaptions);
-const startIndex = Number.isInteger(saved.index) && chapters[saved.index] ? saved.index : 0;
-const position = startIndex === 0 && saved.firstChapterEdition !== 2 ? 0 : saved.position;
+const linkedChapter = Number(/^#kapittel-(\d+)$/.exec(location.hash)?.[1]) - 1;
+const savedIndex = Number.isInteger(saved.index) && chapters[saved.index] ? saved.index : 0;
+const startIndex = chapters[linkedChapter] ? linkedChapter : savedIndex;
+const revisedAudio = chapters[startIndex].audioVersion;
+const audioChanged = (startIndex === 0 && saved.firstChapterEdition !== 2) ||
+  (revisedAudio && saved.audioVersion !== revisedAudio);
+const position = startIndex === savedIndex && !audioChanged ? saved.position : 0;
 selectChapter(startIndex, { position });
