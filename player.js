@@ -27,6 +27,7 @@ function saveProgress() {
     localStorage.setItem(storageKey, JSON.stringify({
       index,
       position: audio.currentTime,
+      firstChapterEdition: 2,
       rate: rate.value,
       light: theme.getAttribute("aria-pressed") === "true",
     }));
@@ -37,8 +38,10 @@ function saveProgress() {
 
 const chapterButtons = chapters.map((chapter, chapterIndex) => {
   const button = document.createElement("button");
+  const edition = document.createElement("small");
+  edition.textContent = chapterIndex === 0 ? "Fullt kapittel" : "Kort introduksjon";
   button.type = "button";
-  button.textContent = `${chapterIndex + 1}. ${chapter.title}`;
+  button.append(`${chapterIndex + 1}. ${chapter.title}`, edition);
   button.addEventListener("click", () => selectChapter(chapterIndex));
   return button;
 });
@@ -56,7 +59,8 @@ function selectChapter(chapterIndex, { position = 0, autoplay = false } = {}) {
   title.textContent = `${index + 1}. ${chapter.title}`;
   statusLine.textContent = "";
   transcript.replaceChildren(...chapter.text.split("\n\n").map((paragraph) => {
-    const element = document.createElement("p");
+    const isHeading = chapterIndex === 0 && /^(?:Prolog\.|Del \p{L}+\.)/u.test(paragraph);
+    const element = document.createElement(isHeading ? "h3" : "p");
     element.textContent = paragraph;
     return element;
   }));
@@ -111,7 +115,7 @@ audio.addEventListener("ended", () => {
   if (index + 1 < chapters.length) {
     selectChapter(index + 1, { autoplay: true });
   } else {
-    statusLine.textContent = "Du har fullført lydboken.";
+    statusLine.textContent = "Du har lyttet til alle tilgjengelige spor.";
   }
 });
 
@@ -120,4 +124,5 @@ if (Array.from(rate.options).some((option) => option.value === saved.rate)) {
 }
 setTheme(saved.light === true);
 const startIndex = Number.isInteger(saved.index) && chapters[saved.index] ? saved.index : 0;
-selectChapter(startIndex, { position: saved.position });
+const position = startIndex === 0 && saved.firstChapterEdition !== 2 ? 0 : saved.position;
+selectChapter(startIndex, { position });
