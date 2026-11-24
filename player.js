@@ -3,6 +3,7 @@ const title = document.querySelector("#chapter-title");
 const chapterNumber = document.querySelector("#chapter-number");
 const statusLine = document.querySelector("#status");
 const captionPanel = document.querySelector("#caption-panel");
+const captionContext = document.querySelector("#caption-context");
 const captions = document.querySelector("#captions");
 const captionToggle = document.querySelector("#caption-toggle");
 const transcript = document.querySelector("#script");
@@ -55,26 +56,37 @@ function formatTime(seconds) {
   return `${minutes}:${String(wholeSeconds % 60).padStart(2, "0")}`;
 }
 
-function currentCaption(position) {
-  const cues = chapterCaptions[index].cues;
+function captionIndexAt(cues, position) {
   let low = 0;
   let high = cues.length;
   while (low < high) {
     const middle = Math.floor((low + high) / 2);
-    if (cues[middle][1] <= position) low = middle + 1;
+    if (cues[middle][0] <= position) low = middle + 1;
     else high = middle;
   }
-  return cues[low]?.[0] <= position ? cues[low][2] : "";
+  return low - 1;
 }
 
 function updateCaptions() {
   let text = "";
+  let previousText = "";
+  let highlight = false;
   if (showCaptions && audio.readyState >= HTMLMediaElement.HAVE_METADATA) {
-    text = captionsMatchAudio
-      ? currentCaption(audio.currentTime)
-      : "Lydsporet og undertekstene er fra ulike versjoner. Last inn siden på nytt.";
+    if (captionsMatchAudio) {
+      const cues = chapterCaptions[index].cues;
+      const cueIndex = captionIndexAt(cues, audio.currentTime);
+      text = cues[cueIndex]?.[2] ?? "";
+      previousText = cues[cueIndex - 1]?.[2] ?? "";
+      highlight = cueIndex >= 0;
+    } else {
+      text = "Lydsporet og undertekstene er fra ulike versjoner. Last inn siden på nytt.";
+    }
   }
-  if (captions.textContent !== text) captions.textContent = text;
+  if (captionContext.textContent !== previousText) captionContext.textContent = previousText;
+  if (captions.textContent !== text) {
+    captions.textContent = text;
+    captions.classList.toggle("is-current", highlight);
+  }
 }
 
 function tickCaptions() {

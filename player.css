@@ -113,7 +113,11 @@ summary { cursor: pointer; }
   text-align: center;
 }
 .caption-panel[hidden] { display: none; }
-#captions { max-inline-size: 68ch; margin: 0; color: var(--ink); line-height: 1.35; overflow-wrap: anywhere; }
+#caption-context, #captions { max-inline-size: 68ch; margin: 0; line-height: 1.35; overflow-wrap: anywhere; }
+#caption-context { margin-block-end: .3rem; font-size: .875rem; }
+#caption-context:empty { display: none; }
+#captions { color: var(--ink); }
+#captions.is-current { color: var(--accent); font-weight: 650; }
 .timeline {
   display: grid;
   grid-template-columns: 4.8ch minmax(0, 1fr) 4.8ch;
@@ -179,4 +183,8 @@ summary { cursor: pointer; }
   .library-content { padding-block-start: .5rem; }
   .player-toolbar { gap: .3rem .5rem; }
   .caption-panel { padding-block: .3rem; min-block-size: 1.8rem; margin-block-end: .2rem; }
+}
+@media (min-width: 34rem) and (max-width: 38rem) and (max-height: 27rem) and (orientation: landscape) {
+  .player-toolbar { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+  .now-playing, .transport, .options { grid-row: auto; grid-column: auto; }
 }
