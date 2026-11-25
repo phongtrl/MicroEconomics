@@ -39,7 +39,7 @@ body.light {
   padding-inline: clamp(.75rem, 4vw, 2.25rem);
 }
 .library-content { padding-block: 1rem 2.5rem; }
-.site-header, .book, .manuscript {
+.site-header, .book, .manuscript, .series-heading {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -48,6 +48,11 @@ body.light {
 }
 .site-header > span { color: var(--muted); font-weight: 650; }
 .book { margin-block: 1.25rem 1.75rem; align-items: end; }
+.book-navigation { display: flex; flex-wrap: wrap; gap: .5rem 1rem; }
+.series + .series { margin-block-start: 2.25rem; }
+.series-heading { margin-block-end: .75rem; }
+.series-heading h2 { margin: 0; }
+.series-sources { margin-block-start: 1rem; max-inline-size: 68ch; }
 h1 { margin: 0; font: 700 clamp(2.1rem, 8vw, 4.25rem)/1.1 Georgia, serif; }
 h2 { margin: 0 0 .75rem; font-size: 1.25rem; line-height: 1.3; }
 .subtitle { margin: .25rem 0; font-size: clamp(1.05rem, 3vw, 1.25rem); }
@@ -142,6 +147,15 @@ summary { cursor: pointer; }
 .payoff-matrix th { background: var(--panel); }
 .payoff-matrix strong { color: var(--accent); font-weight: 750; }
 .payoff-matrix small { display: block; color: var(--accent); }
+.model-note {
+  max-inline-size: 68ch;
+  margin: .75rem 0 1.5rem;
+  padding: .75rem;
+  border-inline-start: 3px solid var(--accent);
+  background: var(--panel);
+}
+.model-note figcaption { font-size: .9rem; font-weight: 650; }
+.model-note code { display: block; margin-block-start: .35rem; overflow-wrap: anywhere; }
 
 .player {
   min-inline-size: 0;

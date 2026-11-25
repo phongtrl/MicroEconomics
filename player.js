@@ -26,6 +26,9 @@ const duration = document.querySelector("#duration");
 const rate = document.querySelector("#rate");
 const theme = document.querySelector("#theme");
 const library = document.querySelector("#chapters");
+const macroLibrary = document.querySelector("#macro-chapters");
+const tracks = [...chapters, ...macroChapters];
+const trackCaptions = [...chapterCaptions, ...macroCaptions];
 const storageKey = "microeconomics-audiobook";
 const audioVersion = "56d9fa4";
 
@@ -56,7 +59,7 @@ function saveProgress() {
       index,
       position: audio.currentTime,
       firstChapterEdition: 2,
-      audioVersion: chapters[index].audioVersion ?? audioVersion,
+      audioVersion: tracks[index].audioVersion ?? audioVersion,
       rate: rate.value,
       light: theme.getAttribute("aria-pressed") === "true",
       showCaptions,
@@ -106,7 +109,7 @@ function updateReaderCue(cueIndex) {
 }
 
 function updateCaptions() {
-  const cues = chapterCaptions[index].cues;
+  const cues = trackCaptions[index].cues;
   const cueIndex = captionsMatchAudio ? captionIndexAt(cues, audio.currentTime) : -1;
   if (!reader.hidden) updateReaderCue(cueIndex);
 
@@ -216,6 +219,20 @@ function renderPayoffMatrix({ title, actions, payoffs }) {
   return table;
 }
 
+function renderModel([label, equations]) {
+  const figure = document.createElement("figure");
+  figure.className = "model-note";
+  const caption = document.createElement("figcaption");
+  caption.textContent = label;
+  figure.append(caption);
+  for (const equation of equations) {
+    const code = document.createElement("code");
+    code.textContent = equation;
+    figure.append(code);
+  }
+  return figure;
+}
+
 function renderManuscript(chapter) {
   manuscriptSentences = [];
   activeSentence = undefined;
@@ -230,9 +247,12 @@ function renderManuscript(chapter) {
       manuscriptSentences.push(span);
     }
     const matrix = chapter.matrices?.[paragraph];
-    return matrix ? [element, renderPayoffMatrix(matrix)] : [element];
+    const model = chapter.models?.[paragraph];
+    if (matrix) return [element, renderPayoffMatrix(matrix)];
+    if (model) return [element, renderModel(model)];
+    return [element];
   }));
-  firstManuscriptCue = chapterCaptions[index].cues.length - manuscriptSentences.length;
+  firstManuscriptCue = trackCaptions[index].cues.length - manuscriptSentences.length;
   readerScroll.scrollTop = 0;
   readerScrollTop = 0;
 }
@@ -265,7 +285,9 @@ function play() {
   });
 }
 
-const chapterButtons = chapters.map((chapter, chapterIndex) => {
+const chapterButtons = tracks.map((chapter, chapterIndex) => {
+  const isMacro = chapterIndex >= chapters.length;
+  const localIndex = isMacro ? chapterIndex - chapters.length : chapterIndex;
   const item = document.createElement("li");
   const button = document.createElement("button");
   const number = document.createElement("span");
@@ -276,14 +298,14 @@ const chapterButtons = chapters.map((chapter, chapterIndex) => {
   button.className = "track";
   button.type = "button";
   number.className = "track-number";
-  number.textContent = String(chapterIndex + 1).padStart(2, "0");
+  number.textContent = String(localIndex + 1).padStart(2, "0");
   number.setAttribute("aria-hidden", "true");
   name.className = "track-title";
   name.textContent = chapter.title;
   edition.className = "track-edition";
   edition.textContent = chapter.full ? "Fullt kapittel" : "Kort introduksjon";
   length.className = "track-duration";
-  length.textContent = formatTime(Math.round(chapterCaptions[chapterIndex].duration));
+  length.textContent = formatTime(Math.round(trackCaptions[chapterIndex].duration));
   info.append(name, document.createElement("br"), edition);
   button.append(number, info, length);
   button.addEventListener("click", () => {
@@ -295,37 +317,44 @@ const chapterButtons = chapters.map((chapter, chapterIndex) => {
     selectChapter(chapterIndex, { autoplay: true });
   });
   item.append(button);
-  library.append(item);
+  (isMacro ? macroLibrary : library).append(item);
   return button;
 });
 
 function selectChapter(chapterIndex, { position = 0, autoplay = false } = {}) {
-  if (!chapters[chapterIndex]) return;
+  if (!tracks[chapterIndex]) return;
 
   audio.pause();
   index = chapterIndex;
-  const chapter = chapters[index];
-  const number = String(index + 1).padStart(2, "0");
-  const path = `audio/${number}.mp3`;
+  const chapter = tracks[index];
+  const isMacro = index >= chapters.length;
+  const localIndex = isMacro ? index - chapters.length : index;
+  const number = String(localIndex + 1).padStart(2, "0");
+  const path = `audio/${isMacro ? "makro-" : ""}${number}.mp3`;
   const source = location.protocol === "file:" ? path : `${path}?v=${chapter.audioVersion ?? audioVersion}`;
+  if (/^#(?:kapittel|makro)-\d+$/.test(location.hash)) {
+    history.replaceState(null, "", `#${isMacro ? "makro" : "kapittel"}-${localIndex + 1}`);
+  }
 
   captionsMatchAudio = false;
   title.textContent = chapter.title;
   title.title = chapter.title;
-  chapterNumber.textContent = `Kapittel ${index + 1} av ${chapters.length}`;
+  chapterNumber.textContent = isMacro
+    ? `Makroøkonomi · ${localIndex + 1} av ${macroChapters.length}`
+    : `Kapittel ${localIndex + 1} av ${chapters.length}`;
   readerTitle.textContent = chapter.title;
   statusLine.textContent = "";
   renderManuscript(chapter);
   chapterDownload.href = source;
-  chapterDownload.download = `Mikroøkonomi - ${number} - ${chapter.title}.mp3`;
+  chapterDownload.download = `${isMacro ? "Makroøkonomi" : "Mikroøkonomi"} - ${number} - ${chapter.title}.mp3`;
   for (const [buttonIndex, button] of chapterButtons.entries()) {
     button.setAttribute("aria-current", String(buttonIndex === index));
   }
-  previous.disabled = index === 0;
-  next.disabled = index === chapters.length - 1;
+  previous.disabled = localIndex === 0;
+  next.disabled = localIndex === (isMacro ? macroChapters.length : chapters.length) - 1;
 
   audio.onloadedmetadata = () => {
-    captionsMatchAudio = Math.abs(audio.duration - chapterCaptions[index].duration) < 0.5;
+    captionsMatchAudio = Math.abs(audio.duration - trackCaptions[index].duration) < 0.5;
     if (Number.isFinite(position) && position > 0 && position < audio.duration) {
       audio.currentTime = position;
     }
@@ -405,10 +434,10 @@ audio.addEventListener("error", () => {
 audio.addEventListener("ended", () => {
   syncCaptions();
   updatePlayButton();
-  if (index + 1 < chapters.length) {
+  if (!next.disabled) {
     selectChapter(index + 1, { autoplay: true });
   } else {
-    statusLine.textContent = "Du har lyttet til alle tilgjengelige spor.";
+    statusLine.textContent = "Du har lyttet til alle tilgjengelige spor i denne delen.";
   }
 });
 
@@ -418,9 +447,11 @@ if (Array.from(rate.options).some((option) => option.value === saved.rate)) {
 setTheme(saved.light === true);
 setCaptions(showCaptions);
 const linkedChapter = Number(/^#kapittel-(\d+)$/.exec(location.hash)?.[1]) - 1;
-const savedIndex = Number.isInteger(saved.index) && chapters[saved.index] ? saved.index : 0;
-const startIndex = chapters[linkedChapter] ? linkedChapter : savedIndex;
-const { audioVersion: revisedAudio, previousAudio } = chapters[startIndex];
+const linkedMacro = Number(/^#makro-(\d+)$/.exec(location.hash)?.[1]) - 1;
+const savedIndex = Number.isInteger(saved.index) && tracks[saved.index] ? saved.index : 0;
+const startIndex = macroChapters[linkedMacro] ? chapters.length + linkedMacro
+  : chapters[linkedChapter] ? linkedChapter : savedIndex;
+const { audioVersion: revisedAudio, previousAudio } = tracks[startIndex];
 const audioChanged = (startIndex === 0 && saved.firstChapterEdition !== 2) ||
   (revisedAudio && saved.audioVersion !== revisedAudio);
 let position = startIndex === savedIndex && Number.isFinite(saved.position) ? saved.position : 0;
@@ -432,3 +463,4 @@ if (audioChanged) {
   }
 }
 selectChapter(startIndex, { position });
+if (macroChapters[linkedMacro]) document.querySelector("#makrookonomi").scrollIntoView({ block: "start" });

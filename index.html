@@ -3,11 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mikroøkonomi – MBA Audio Academy</title>
-  <link rel="stylesheet" href="player.css?v=6">
+  <title>Mikroøkonomi og makroøkonomi – MBA Audio Academy</title>
+  <link rel="stylesheet" href="player.css?v=7">
   <script src="chapters.js?v=spillteori-2" defer></script>
   <script src="captions.js?v=4" defer></script>
-  <script src="player.js?v=6" defer></script>
+  <script src="macro-chapters.js?v=1" defer></script>
+  <script src="macro-captions.js?v=1" defer></script>
+  <script src="player.js?v=7" defer></script>
 </head>
 <body>
   <main id="library-view" class="library-view">
@@ -19,16 +21,45 @@
 
       <section class="book" aria-labelledby="book-title">
         <div>
-          <h1 id="book-title">Mikroøkonomi</h1>
+          <h1 id="book-title">Mikroøkonomi og makroøkonomi</h1>
           <p class="subtitle">Kunsten å ta bedre beslutninger</p>
-          <p class="book-summary">To fullstendige kapitler · 10 korte introduksjoner</p>
         </div>
-        <a class="download-book" href="audio/Mikrookonomi.m4b?v=spillteori-2" download>Last ned lydsporene (M4B)</a>
+        <nav class="book-navigation" aria-label="Lydbokdeler">
+          <a href="#mikrookonomi">Mikroøkonomi</a>
+          <a href="#makrookonomi">Makroøkonomi</a>
+        </nav>
       </section>
 
-      <section aria-labelledby="library-title">
-        <h2 id="library-title">Kapitler</h2>
+      <section id="mikrookonomi" class="series" aria-labelledby="library-title">
+        <div class="series-heading">
+          <div>
+            <h2 id="library-title">Mikroøkonomi</h2>
+            <p class="book-summary">To fullstendige kapitler · 10 korte introduksjoner</p>
+          </div>
+          <a class="download-book" href="audio/Mikrookonomi.m4b?v=spillteori-2" download>Last ned mikroøkonomi (M4B)</a>
+        </div>
         <ol id="chapters" class="tracks"></ol>
+      </section>
+
+      <section id="makrookonomi" class="series" aria-labelledby="macro-title">
+        <div class="series-heading">
+          <div>
+            <h2 id="macro-title">Makroøkonomi</h2>
+            <p class="book-summary">Sju kapitler med regneeksempler og eksamensoppgaver</p>
+          </div>
+          <a class="download-book" href="audio/Makrookonomi.m4b" download>Last ned makroøkonomi (M4B)</a>
+        </div>
+        <ol id="macro-chapters" class="tracks"></ol>
+        <details class="series-sources">
+          <summary>Kilder for makroøkonomidelen</summary>
+          <ul>
+            <li>Konjunkturnotatene og <cite>Kompendium, Makroøkonomi 2026</cite> gir grunnlaget for kapitlet om BNP og produksjonsgap.</li>
+            <li><cite>En standard multiplikatormodell</cite>, makrooppgavene og flervalgsoppgavene i ECO 5026 ligger til grunn for modellkapitlene.</li>
+            <li>Notatene om transmisjonsmekanismen og valutakurser ligger til grunn for kapitlene om renter, inflasjon og valuta.</li>
+            <li>Eksamenssett og løsningsskisser fra ECO 5026 fra 2020 til 2026, prøvesettet fra 2020 og <cite>Noen enkle regneregler</cite> gir grunnlaget for eksamensverkstedet. Øvelsene bruker nye oppgavetekster og tall.</li>
+          </ul>
+          <p>Fra Norges Bank brukte jeg sidene om <a href="https://www.norges-bank.no/tema/pengepolitikk/Produksjonsgap/">produksjonsgap</a> og <a href="https://www.norges-bank.no/tema/pengepolitikk/pengepolitisk-strategi/">pengepolitisk strategi</a>, samt <a href="https://www.norges-bank.no/aktuelt/publikasjoner/Norges-Bank-Memo-/2024/nb-memo-3-2024-pengepolitisk-handbok/nettrapport-nb-memo-3-2024-pengepolitisk-handbok/">håndboken i pengepolitikk</a>.</p>
+        </details>
       </section>
 
       <section class="manuscript" aria-label="Manus og nedlasting for kapitlet">

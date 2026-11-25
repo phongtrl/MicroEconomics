@@ -3,10 +3,10 @@
 *Mikroøkonomi – Kunsten å ta bedre beslutninger* er en faglig lydbok på norsk bokmål for MBA i strategi og ledelse. Den planlagte spilletiden er 9 timer og 15 minutter. Kapittel 1 og 9 er fullstendige. Spillteorikapitlet varer i omtrent 56 minutter og dekker klassiske spill, strategiske markedsvalg og forhandlinger. De fire gevinstmatrisene viser beste responser i fet skrift og har en egen gjennomgang i lyden. De ti øvrige kapitlene er foreløpig korte introduksjoner.
 
 - Åpne `index.html` for å lytte, bytte kapittel og lese manuset. Når **Undertekster** er på, vises gjeldende og forrige setning. Velg **Utvid** for å lese hele kapitlet med setningen som leses fremhevet. Du kan bla fritt og trykke **Følg lyden** for å gå tilbake til avspillingspunktet. Spilleren husker lytteposisjonen og tekstinnstillingen når nettleseren tillater lokal lagring.
-- Åpne [de tilgjengelige lydsporene](audio/Mikrookonomi.m4b) i en lydbokspiller for avspilling med kapittelinndeling. De enkelte sporene ligger som MP3-filer i `audio/`.
-- Manuset ligger i `chapters.js`. Lydsporene er lest inn med den norske [Piper-stemmen talesyntese](https://huggingface.co/rhasspy/piper-voices/tree/main/no/no_NO/talesyntese/medium).
+- Lydbokfilene har kapittelmarkører, og enkeltsporene ligger i `audio/`. [Mikroøkonomi (M4B)](audio/Mikrookonomi.m4b) · [Makroøkonomi (M4B)](audio/Makrookonomi.m4b)
+- Manusene ligger i `chapters.js` og `macro-chapters.js`. Lydsporene er lest inn med den norske [Piper-stemmen talesyntese](https://huggingface.co/rhasspy/piper-voices/tree/main/no/no_NO/talesyntese/medium).
 
-## Kapittelplan
+## Kapittelplan for mikroøkonomi
 
 | Kapittel | Tema | Mål for spilletid | Tilgjengelig |
 | --- | --- | ---: | --- |
@@ -25,3 +25,19 @@
 | | **Totalt** | **9 t 15 min** | |
 
 Hvert fullstendige kapittel forklarer modeller og regnestykker med ord, med praktiske eksempler og refleksjonsspørsmål som kan brukes uten å se på skjermen.
+
+## Makroøkonomi
+
+Den nye delen varer i omtrent 48 minutter og bygger på konjunkturnotatene og undervisningsmaterialet til ECO 5026.
+
+| Kapittel | Tema | Innhold |
+| --- | --- | --- |
+| 1 | Konjunkturer og BNP | Nasjonalregnskap, vekst, produksjonsgap og sjokk |
+| 2 | Multiplikatoren i en lukket økonomi | Endogene variabler, konsumfunksjon, endringsform og balansert budsjett |
+| 3 | Skatt, rente og investeringer | Fast og proporsjonal skatt, realrente og direkte og indirekte virkninger |
+| 4 | Åpen økonomi og nettoeksport | Importlekkasje, valutakanal og tolkning av multiplikatorens teller og nevner |
+| 5 | Pengepolitikk og transmisjonsmekanismen | Etterspørsel, valutakurs, forventninger og målkonflikter |
+| 6 | Valutakurser og renteparitet | Kursenheter, kjøpekraftsparitet, risikopremie og trilemmaet |
+| 7 | Eksamensverksted i makroøkonomi | Fire nye oppgaver med gjennomgang og tre korte kontrollspørsmål |
+
+I nettspilleren kan du åpne kildelisten for makroøkonomidelen og utvide undertekstene for å se modellene i manuset. Oppgavene bruker egne tall og formuleringer basert på oppgavetyper i eksamenssettene og løsningsskissene.
